@@ -1,0 +1,145 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CHANGELOG_START_ERROR	lustre_irods_errors.hpp	/^const int CHANGELOG_START_ERROR = -14;$/;"	m	namespace:lustre_irods
+COLLISION_IN_FIDSTR	lustre_irods_errors.hpp	/^const int COLLISION_IN_FIDSTR = -13;$/;"	m	namespace:lustre_irods
+CONFIGURATION_ERROR	lustre_irods_errors.hpp	/^const int CONFIGURATION_ERROR = -4;$/;"	m	namespace:lustre_irods
+INVALID_CR_TYPE_ERROR	lustre_irods_errors.hpp	/^const int INVALID_CR_TYPE_ERROR = -10;$/;"	m	namespace:lustre_irods
+INVALID_OPERAND_ERROR	lustre_irods_errors.hpp	/^const int INVALID_OPERAND_ERROR = -1;$/;"	m	namespace:lustre_irods
+INVALID_RESOURCE_ID_ERROR	lustre_irods_errors.hpp	/^const int INVALID_RESOURCE_ID_ERROR = -6;$/;"	m	namespace:lustre_irods
+IRODS_CONNECTION_ERROR	lustre_irods_errors.hpp	/^const int IRODS_CONNECTION_ERROR = -3;$/;"	m	namespace:lustre_irods
+IRODS_ENVIRONMENT_ERROR	lustre_irods_errors.hpp	/^const int IRODS_ENVIRONMENT_ERROR = -7;$/;"	m	namespace:lustre_irods
+IRODS_ERROR	lustre_irods_errors.hpp	/^const int IRODS_ERROR = -2;$/;"	m	namespace:lustre_irods
+IRODS_LUSTRE_CHANGELOG_CONFIG_H	config.hpp	2;"	d
+IRODS_LUSTRE_INOUT_STRUCTS	inout_structs.h	2;"	d
+IRODS_OPS_HPP	irods_ops.hpp	2;"	d
+IrodsLustreApiInp_PI	inout_structs.h	8;"	d
+IrodsLustreApiOut_PI	inout_structs.h	13;"	d
+LLAPI_FID2PATH_ERROR	lustre_irods_errors.hpp	/^const int LLAPI_FID2PATH_ERROR = -9;$/;"	m	namespace:lustre_irods
+LOG	logging.hpp	10;"	d
+LOG_DBG	logging.hpp	8;"	d
+LOG_ERR	logging.hpp	5;"	d
+LOG_FATAL	logging.hpp	4;"	d
+LOG_INFO	logging.hpp	7;"	d
+LOG_WARN	logging.hpp	6;"	d
+LPX64	main.cpp	40;"	d	file:
+LUSTRE_CHANGE_TABLE_HPP	lustre_change_table.hpp	2;"	d
+LUSTRE_CONNECTOR_DEBUG_LOGGING	logging.hpp	2;"	d
+LUSTRE_IRODS_ERRORS_HPP	lustre_irods_errors.hpp	2;"	d
+LUSTRE_OBJECT_DNE_ERROR	lustre_irods_errors.hpp	/^const int LUSTRE_OBJECT_DNE_ERROR = -8;$/;"	m	namespace:lustre_irods
+MAX_CONFIG_VALUE_SIZE	config.hpp	/^const int MAX_CONFIG_VALUE_SIZE = 256;$/;"	v
+QUIT	lustre_irods_errors.hpp	/^const int QUIT = -12;$/;"	m	namespace:lustre_irods
+RESOURCE_NOT_FOUND_ERROR	lustre_irods_errors.hpp	/^const int RESOURCE_NOT_FOUND_ERROR = -5;$/;"	m	namespace:lustre_irods
+SKIP_RECORD	lustre_irods_errors.hpp	/^const int SKIP_RECORD = -15;$/;"	m	namespace:lustre_irods
+SQLITE_DB_ERROR	lustre_irods_errors.hpp	/^const int SQLITE_DB_ERROR = -11;$/;"	m	namespace:lustre_irods
+SUCCESS	lustre_irods_errors.hpp	/^const int SUCCESS = 0;$/;"	m	namespace:lustre_irods
+add_capnproto_buffer_back_to_change_table	lustre_change_table.cpp	/^int add_capnproto_buffer_back_to_change_table(unsigned char* buf, size_t buflen, change_map_t& change_map, std::set<std::string>& active_fidstr_list) {$/;"	f
+add_entries_back_to_change_table	lustre_change_table.cpp	/^void add_entries_back_to_change_table(change_map_t& change_map, std::shared_ptr<change_map_t>& removed_entries) {$/;"	f
+beegfs_socket	config.hpp	/^    std::string beegfs_socket;$/;"	m	struct:lustre_irods_connector_cfg
+buf	inout_structs.h	/^    unsigned char *buf;$/;"	m	struct:__anon1
+buflen	inout_structs.h	/^    int buflen;$/;"	m	struct:__anon1
+change_descriptor	lustre_change_table.hpp	/^struct change_descriptor {$/;"	s
+change_descriptor_fidstr_idx	lustre_change_table.hpp	/^struct change_descriptor_fidstr_idx {};$/;"	s
+change_descriptor_oper_complete_idx	lustre_change_table.hpp	/^struct change_descriptor_oper_complete_idx {};$/;"	s
+change_descriptor_seq_idx	lustre_change_table.hpp	/^struct change_descriptor_seq_idx {};$/;"	s
+change_map_t	lustre_change_table.hpp	/^> change_map_t;$/;"	t
+change_table_mutex	lustre_change_table.cpp	/^static std::mutex change_table_mutex;$/;"	v	file:
+changelog_poll_interval_seconds	config.hpp	/^    unsigned int changelog_poll_interval_seconds;$/;"	m	struct:lustre_irods_connector_cfg
+changelog_reader_broadcast_address	config.hpp	/^    std::string changelog_reader_broadcast_address;$/;"	m	struct:lustre_irods_connector_cfg
+changelog_reader_push_work_address	config.hpp	/^    std::string changelog_reader_push_work_address;$/;"	m	struct:lustre_irods_connector_cfg
+cr_index	lustre_change_table.hpp	/^    unsigned long long            cr_index;$/;"	m	struct:change_descriptor
+dbgstream	config.cpp	/^FILE *dbgstream = stdout;$/;"	v
+deserialize_change_map_from_sqlite	lustre_change_table.cpp	/^int deserialize_change_map_from_sqlite(change_map_t& change_map, const std::string& db_file) {$/;"	f
+entries_ready_to_process	lustre_change_table.cpp	/^bool entries_ready_to_process(change_map_t& change_map) {$/;"	f
+event_type_to_str	lustre_change_table.cpp	/^std::string event_type_to_str(ChangeDescriptor::EventTypeEnum type) {$/;"	f
+fidstr	lustre_change_table.hpp	/^    std::string                   fidstr;$/;"	m	struct:change_descriptor
+file_size	lustre_change_table.hpp	/^    off_t                         file_size;$/;"	m	struct:change_descriptor
+get_change_table_size	lustre_change_table.cpp	/^size_t get_change_table_size(change_map_t& change_map) {$/;"	f
+get_cr_index	lustre_change_table.cpp	/^int get_cr_index(unsigned long long& cr_index, const std::string& db_file) {$/;"	f
+get_update_status_from_capnproto_buf	lustre_change_table.cpp	/^int get_update_status_from_capnproto_buf(unsigned char* buf, size_t buflen, std::string& update_status) {$/;"	f
+inflight_messages_mutex	main.cpp	/^static std::mutex inflight_messages_mutex;$/;"	v	file:
+initiate_change_map_serialization_database	lustre_change_table.cpp	/^int initiate_change_map_serialization_database(const std::string& db_file) {$/;"	f
+instantiate_irods_connection	irods_ops.cpp	/^int lustre_irods_connection::instantiate_irods_connection(const lustre_irods_connector_cfg_t *config_struct_ptr, int thread_number) {$/;"	f	class:lustre_irods_connection
+interrupt_handler	main.cpp	/^void interrupt_handler(int dummy) {$/;"	f
+irodsLustreApiInp_t	inout_structs.h	/^} irodsLustreApiInp_t;$/;"	t	typeref:struct:__anon1
+irodsLustreApiOut_t	inout_structs.h	/^} irodsLustreApiOut_t;$/;"	t	typeref:struct:__anon2
+irods_api_client_main	main.cpp	/^void irods_api_client_main(const lustre_irods_connector_cfg_t *config_struct_ptr,$/;"	f
+irods_api_update_type	config.hpp	/^    std::string irods_api_update_type;    \/\/ valid values are "direct" and "policy"$/;"	m	struct:lustre_irods_connector_cfg
+irods_client_broadcast_address	config.hpp	/^    std::string irods_client_broadcast_address;$/;"	m	struct:lustre_irods_connector_cfg
+irods_client_connect_failure_retry_seconds	config.hpp	/^    unsigned int irods_client_connect_failure_retry_seconds;$/;"	m	struct:lustre_irods_connector_cfg
+irods_conn	irods_ops.hpp	/^   rcComm_t *irods_conn;$/;"	m	class:lustre_irods_connection
+irods_connection_cfg	config.hpp	/^typedef struct irods_connection_cfg {$/;"	s
+irods_connection_cfg_t	config.hpp	/^} irods_connection_cfg_t;$/;"	t	typeref:struct:irods_connection_cfg
+irods_connection_list	config.hpp	/^    std::map<int, irods_connection_cfg_t> irods_connection_list;$/;"	m	struct:lustre_irods_connector_cfg
+irods_host	config.hpp	/^    std::string irods_host;$/;"	m	struct:irods_connection_cfg
+irods_port	config.hpp	/^    int irods_port;$/;"	m	struct:irods_connection_cfg
+irods_resource_id	config.hpp	/^    int64_t irods_resource_id;$/;"	m	struct:lustre_irods_connector_cfg
+irods_resource_name	config.hpp	/^    std::string irods_resource_name;$/;"	m	struct:lustre_irods_connector_cfg
+irods_updater_thread_count	config.hpp	/^    unsigned int irods_updater_thread_count;$/;"	m	struct:lustre_irods_connector_cfg
+last_event	lustre_change_table.hpp	/^    ChangeDescriptor::EventTypeEnum last_event; $/;"	m	struct:change_descriptor
+log_level	config.cpp	/^int  log_level = LOG_INFO;$/;"	v
+lustre_close	lustre_change_table.cpp	/^int lustre_close(unsigned long long cr_index, const std::string& lustre_root_path, const std::string& fidstr, const std::string& parent_fidstr,$/;"	f
+lustre_create	lustre_change_table.cpp	/^int lustre_create(unsigned long long cr_index, const std::string& lustre_root_path, const std::string& fidstr, const std::string& parent_fidstr,$/;"	f
+lustre_irods	lustre_irods_errors.hpp	/^namespace lustre_irods {$/;"	n
+lustre_irods_connection	irods_ops.hpp	/^   explicit lustre_irods_connection(unsigned int tnum) : thread_number(tnum), irods_conn(nullptr) {}$/;"	f	class:lustre_irods_connection
+lustre_irods_connection	irods_ops.hpp	/^class lustre_irods_connection {$/;"	c
+lustre_irods_connector_cfg	config.hpp	/^typedef struct lustre_irods_connector_cfg {$/;"	s
+lustre_irods_connector_cfg_t	config.hpp	/^} lustre_irods_connector_cfg_t;$/;"	t	typeref:struct:lustre_irods_connector_cfg
+lustre_mkdir	lustre_change_table.cpp	/^int lustre_mkdir(unsigned long long cr_index, const std::string& lustre_root_path, const std::string& fidstr, const std::string& parent_fidstr,$/;"	f
+lustre_mtime	lustre_change_table.cpp	/^int lustre_mtime(unsigned long long cr_index, const std::string& lustre_root_path, const std::string& fidstr, const std::string& parent_fidstr,$/;"	f
+lustre_path	lustre_change_table.hpp	/^    std::string                   lustre_path;     \/\/ the lustre_path can be ascertained by the parent_fid and object_name$/;"	m	struct:change_descriptor
+lustre_print_change_table	lustre_change_table.cpp	/^void lustre_print_change_table(const change_map_t& change_map) {$/;"	f
+lustre_rename	lustre_change_table.cpp	/^int lustre_rename(unsigned long long cr_index, const std::string& lustre_root_path, const std::string& fidstr, const std::string& parent_fidstr,$/;"	f
+lustre_rmdir	lustre_change_table.cpp	/^int lustre_rmdir(unsigned long long cr_index, const std::string& lustre_root_path, const std::string& fidstr, const std::string& parent_fidstr,$/;"	f
+lustre_root_path	config.hpp	/^    std::string lustre_root_path;$/;"	m	struct:lustre_irods_connector_cfg
+lustre_trunc	lustre_change_table.cpp	/^int lustre_trunc(unsigned long long cr_index, const std::string& lustre_root_path, const std::string& fidstr, const std::string& parent_fidstr,$/;"	f
+lustre_unlink	lustre_change_table.cpp	/^int lustre_unlink(unsigned long long cr_index, const std::string& lustre_root_path, const std::string& fidstr, const std::string& parent_fidstr,$/;"	f
+lustre_write_change_table_to_str	lustre_change_table.cpp	/^void lustre_write_change_table_to_str(const change_map_t& change_map, std::string& buffer) {$/;"	f
+lustre_write_fidstr_to_root_dir	lustre_change_table.cpp	/^int lustre_write_fidstr_to_root_dir(const std::string& lustre_root_path, const std::string& fidstr, change_map_t& change_map) {$/;"	f
+main	main.cpp	/^int main(int argc, char *argv[]) {$/;"	f
+maximum_records_per_sql_command	config.hpp	/^    unsigned int maximum_records_per_sql_command;$/;"	m	struct:lustre_irods_connector_cfg
+maximum_records_per_update_to_irods	config.hpp	/^    unsigned int maximum_records_per_update_to_irods;$/;"	m	struct:lustre_irods_connector_cfg
+maximum_records_to_receive_from_lustre_changelog	config.hpp	/^    unsigned int maximum_records_to_receive_from_lustre_changelog;$/;"	m	struct:lustre_irods_connector_cfg
+message_receive_timeout_msec	config.hpp	/^    unsigned int message_receive_timeout_msec;$/;"	m	struct:lustre_irods_connector_cfg
+metadata_key_for_storage_tiering_time_violation	config.hpp	/^    std::string metadata_key_for_storage_tiering_time_violation;$/;"	m	struct:lustre_irods_connector_cfg
+number_inflight_messages	main.cpp	/^unsigned int number_inflight_messages = 0;$/;"	v
+object_name	lustre_change_table.hpp	/^    std::string                   object_name;$/;"	m	struct:change_descriptor
+object_type	lustre_change_table.hpp	/^    ChangeDescriptor::ObjectTypeEnum object_type;$/;"	m	struct:change_descriptor
+object_type_to_str	lustre_change_table.cpp	/^std::string object_type_to_str(ChangeDescriptor::ObjectTypeEnum type) {$/;"	f
+oper_complete	lustre_change_table.hpp	/^    bool                          oper_complete;$/;"	m	struct:change_descriptor
+parent_fidstr	lustre_change_table.hpp	/^    std::string                   parent_fidstr;$/;"	m	struct:change_descriptor
+populate_irods_resc_id	irods_ops.cpp	/^int lustre_irods_connection::populate_irods_resc_id(lustre_irods_connector_cfg_t *config_struct_ptr) {$/;"	f	class:lustre_irods_connection
+query_callback_change_map	lustre_change_table.cpp	/^static int query_callback_change_map(void *change_map_void_ptr, int argc, char** argv, char** columnNames) {$/;"	f	file:
+query_callback_cr_index	lustre_change_table.cpp	/^static int query_callback_cr_index(void *cr_index_void_ptr, int argc, char** argv, char** columnNames) {$/;"	f	file:
+read_and_process_command_line_options	main.cpp	/^int read_and_process_command_line_options(int argc, char *argv[], std::string& config_file) {$/;"	f
+read_config_file	config.cpp	/^int read_config_file(const std::string& filename, lustre_irods_connector_cfg_t *config_struct) {$/;"	f
+read_key_from_map	config.cpp	/^int read_key_from_map(const json_map& config_map, const std::string &key, std::string& value, bool required = true) {$/;"	f
+receive_message	main.cpp	/^std::string receive_message(zmq::socket_t& subscriber) {$/;"	f
+received_terminate_message	main.cpp	/^bool received_terminate_message(zmq::socket_t& subscriber) {$/;"	f
+register_map	config.hpp	/^    std::vector<std::pair<std::string, std::string> > register_map;$/;"	m	struct:lustre_irods_connector_cfg
+remove_fidstr_from_active_list	lustre_change_table.cpp	/^void remove_fidstr_from_active_list(unsigned char* buf, size_t buflen, std::set<std::string>& active_fidstr_list) {$/;"	f
+remove_fidstr_from_table	lustre_change_table.cpp	/^int remove_fidstr_from_table(const std::string& fidstr, change_map_t& change_map) {$/;"	f
+remove_trailing_slash	config.cpp	/^bool remove_trailing_slash(std::string& path) {$/;"	f
+result_accumulator_main	main.cpp	/^void result_accumulator_main(const lustre_irods_connector_cfg_t *config_struct_ptr,$/;"	f
+result_accumulator_push_address	config.hpp	/^    std::string result_accumulator_push_address;$/;"	m	struct:lustre_irods_connector_cfg
+run_main_changelog_reader_loop	main.cpp	/^void run_main_changelog_reader_loop(const lustre_irods_connector_cfg_t& config_struct, change_map_t& change_map, $/;"	f
+s_recv_noblock	main.cpp	/^static std::string s_recv_noblock(zmq::socket_t& socket) {$/;"	f	file:
+s_recv_noblock_void	main.cpp	/^void s_recv_noblock_void(zmq::socket_t& socket) {$/;"	f
+s_send	main.cpp	/^static bool s_send(zmq::socket_t& socket, const std::string& string) {$/;"	f	file:
+s_sendmore	main.cpp	/^static bool s_sendmore (zmq::socket_t& socket, const std::string& string) {$/;"	f	file:
+send_change_map_to_irods	irods_ops.cpp	/^int lustre_irods_connection::send_change_map_to_irods(irodsLustreApiInp_t *inp) const {$/;"	f	class:lustre_irods_connection
+serialize_change_map_to_sqlite	lustre_change_table.cpp	/^int serialize_change_map_to_sqlite(change_map_t& change_map, const std::string& db_file) {$/;"	f
+set_log_level	config.cpp	/^void set_log_level(const std::string& log_level_str) {$/;"	f
+set_metadata_for_storage_tiering_time_violation	config.hpp	/^    bool set_metadata_for_storage_tiering_time_violation;$/;"	m	struct:lustre_irods_connector_cfg
+set_update_status_in_capnproto_buf	lustre_change_table.cpp	/^int set_update_status_in_capnproto_buf(unsigned char*& buf, size_t& buflen, const std::string& new_status) {$/;"	f
+status	inout_structs.h	/^    int status;$/;"	m	struct:__anon2
+str_to_event_type	lustre_change_table.cpp	/^ChangeDescriptor::EventTypeEnum str_to_event_type(const std::string& str) {$/;"	f
+str_to_object_type	lustre_change_table.cpp	/^ChangeDescriptor::ObjectTypeEnum str_to_object_type(const std::string& str) {$/;"	f
+thread_number	irods_ops.hpp	/^   unsigned int thread_number;$/;"	m	class:lustre_irods_connection
+timestamp	lustre_change_table.hpp	/^    time_t                        timestamp;$/;"	m	struct:change_descriptor
+write_change_table_to_capnproto_buf	lustre_change_table.cpp	/^int write_change_table_to_capnproto_buf(const lustre_irods_connector_cfg_t *config_struct_ptr, void*& buf, size_t& buflen, $/;"	f
+write_cr_index_to_sqlite	lustre_change_table.cpp	/^int write_cr_index_to_sqlite(unsigned long long cr_index, const std::string& db_file) {$/;"	f
+~lustre_irods_connection	irods_ops.cpp	/^lustre_irods_connection::~lustre_irods_connection() {$/;"	f	class:lustre_irods_connection
