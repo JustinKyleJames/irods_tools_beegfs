@@ -49,7 +49,7 @@
 #pragma push_macro("ERROR")
 #undef ERROR
 
-#include "../../lustre_irods_connector/src/change_table.capnp.h"
+#include "../../beegfs_irods_connector/src/change_table.capnp.h"
 #include <capnp/message.h>
 #include <capnp/serialize-packed.h>
 
@@ -58,7 +58,7 @@
 
 #include "inout_structs.h"
 #include "database_routines.hpp"
-#include "irods_lustre_operations.hpp"
+#include "irods_beegfs_operations.hpp"
 
 #define MAX_BIND_VARS 32000
 extern const char *cllBindVars[MAX_BIND_VARS];

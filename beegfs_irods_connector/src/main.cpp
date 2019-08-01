@@ -124,6 +124,10 @@ std::string get_basename(const std::string& p1) {
 
 void handle_event(const BeeGFS::packet& packet, const std::string& root_path, change_map_t& change_map) {
 
+    LOG(LOG_DBG, "packet received: [type=%s][path=%s][entryId=%s][parentEntryId=%s][targetPath=%s][targetParentId=%s]", 
+            to_string(packet.type).c_str(), packet.path.c_str(), packet.entryId.c_str(), packet.parentEntryId.c_str(), 
+            packet.targetPath.c_str(), packet.targetParentId.c_str());
+
 
     std::string full_path = concatenate_paths_with_boost(root_path, packet.path);
     std::string basename = get_basename(packet.path);
@@ -693,11 +697,10 @@ int main(int argc, char *argv[]) {
 
     // add in an event for a  mkdir for the lustre_root so that it will get 
     // populated with the fidstr
-    // TODO
-    /*std::string root_fidstr = get_fidstr_from_path(config_struct.lustre_root_path);
+    std::string root_fidstr = "root";
     LOG(LOG_DBG, "Root fidstr %s\n", root_fidstr.c_str());
     LOG(LOG_INFO, "lustre_write_fidstr_to_root_dir [lustre_root_path=%s][root_fidstr=%s]\n", config_struct.lustre_root_path.c_str(), root_fidstr.c_str());
-    lustre_write_fidstr_to_root_dir(config_struct.lustre_root_path, root_fidstr, change_map);*/
+    lustre_write_fidstr_to_root_dir(config_struct.lustre_root_path, root_fidstr, change_map);
 
 
     unsigned long long last_cr_index = 0;

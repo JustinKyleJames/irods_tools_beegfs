@@ -33,7 +33,7 @@
 #pragma push_macro("ERROR")
 #undef ERROR
 
-#include "../../lustre_irods_connector/src/change_table.capnp.h"
+#include "../../beegfs_irods_connector/src/change_table.capnp.h"
 #include <capnp/message.h>
 #include <capnp/serialize-packed.h>
 

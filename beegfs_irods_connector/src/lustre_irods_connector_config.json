@@ -1,7 +1,7 @@
 {
         "beegfs_socket": "/tmp/beegfslog",
-        "lustre_root_path": "/lustreResc/lustre01",
-        "irods_resource_name": "lustreResc",
+        "lustre_root_path": "/mnt/beegfs",
+        "irods_resource_name": "demoResc",
         "irods_api_update_type": "direct",
         "log_level": "LOG_DBG",
         "changelog_poll_interval_seconds": 1,
@@ -21,16 +21,16 @@
 
         "register_map": [
             {
-                "lustre_path": "/lustreResc/lustre01/home",
+                "lustre_path": "/mnt/beegfs/home",
                 "irods_register_path": "/tempZone/home"
             },
             {
-                "lustre_path": "/lustreResc/lustre01/a",
-                "irods_register_path": "/tempZone/a"
+                "lustre_path": "/mnt/beegfs/rods",
+                "irods_register_path": "/tempZone/home/rods"
             },
             {
-                "lustre_path": "/lustreResc/lustre01",
-                "irods_register_path": "/tempZone/lustre01"
+                "lustre_path": "/mnt/beegfs",
+                "irods_register_path": "/tempZone/beegfs"
             }
         ],
 

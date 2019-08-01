@@ -25,33 +25,33 @@ set(
 
 
 set(
-  IRODS_API_PLUGIN_SOURCES_lustre_api_server
-  ${CMAKE_SOURCE_DIR}/src/libirods-lustre-api.cpp
+  IRODS_API_PLUGIN_SOURCES_beegfs_api_server
+  ${CMAKE_SOURCE_DIR}/src/libirods-beegfs-api.cpp
   ${CMAKE_SOURCE_DIR}/src/database_routines.cpp
-  ${CMAKE_SOURCE_DIR}/src/irods_lustre_operations.cpp
-  ${CMAKE_SOURCE_DIR}/../lustre_irods_connector/src/change_table.capnp.h
+  ${CMAKE_SOURCE_DIR}/src/irods_beegfs_operations.cpp
+  ${CMAKE_SOURCE_DIR}/../beegfs_irods_connector/src/change_table.capnp.h
   )
 
 set(
-  IRODS_API_PLUGIN_SOURCES_lustre_api_client
-  ${CMAKE_SOURCE_DIR}/src/libirods-lustre-api.cpp
+  IRODS_API_PLUGIN_SOURCES_beegfs_api_client
+  ${CMAKE_SOURCE_DIR}/src/libirods-beegfs-api.cpp
   ${CMAKE_SOURCE_DIR}/src/database_routines.cpp
-  ${CMAKE_SOURCE_DIR}/src/irods_lustre_operations.cpp
-  ${CMAKE_SOURCE_DIR}/../lustre_irods_connector/src/change_table.capnp.h
+  ${CMAKE_SOURCE_DIR}/src/irods_beegfs_operations.cpp
+  ${CMAKE_SOURCE_DIR}/../beegfs_irods_connector/src/change_table.capnp.h
   )
 
 set(
-  IRODS_API_PLUGIN_COMPILE_DEFINITIONS_lustre_api_server
+  IRODS_API_PLUGIN_COMPILE_DEFINITIONS_beegfs_api_server
   RODS_SERVER
   ENABLE_RE
   )
 
 set(
-  IRODS_API_PLUGIN_COMPILE_DEFINITIONS_lustre_api_client
+  IRODS_API_PLUGIN_COMPILE_DEFINITIONS_beegfs_api_client
   )
 
 set(
-  IRODS_API_PLUGIN_LINK_LIBRARIES_lustre_api_server
+  IRODS_API_PLUGIN_LINK_LIBRARIES_beegfs_api_server
   irods_client
   irods_server
   irods_common
@@ -59,7 +59,7 @@ set(
   )
 
 set(
-  IRODS_API_PLUGIN_LINK_LIBRARIES_lustre_api_client
+  IRODS_API_PLUGIN_LINK_LIBRARIES_beegfs_api_client
   irods_client
   irods_server
   irods_common
@@ -68,8 +68,8 @@ set(
 
 set(
   IRODS_API_PLUGINS
-  lustre_api_server
-  lustre_api_client
+  beegfs_api_server
+  beegfs_api_client
   )
 
 foreach(PLUGIN ${IRODS_API_PLUGINS})
