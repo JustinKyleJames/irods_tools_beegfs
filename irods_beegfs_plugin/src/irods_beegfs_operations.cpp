@@ -226,12 +226,25 @@ int beegfs_path_to_irods_path(const std::string& beegfs_path, const std::vector<
 int irods_path_to_beegfs_path(const std::string& irods_path, const std::vector<std::pair<std::string, std::string> >& register_map,
         std::string& beegfs_path) {
 
+    // make sure we match the longest possible match
+    size_t match_length = 0;
+    std::string matched_irods_path_prefix;
+    std::string matched_beegfs_prefix;
+
     for (auto& iter : register_map) {
         const std::string& irods_path_prefix = iter.second;
         if (irods_path.compare(0, irods_path_prefix.length(), irods_path_prefix) == 0) {
-            beegfs_path = iter.first + irods_path.substr(irods_path_prefix.length());
-            return 0;
+            if (irods_path_prefix.length() > match_length) {
+                match_length = irods_path_prefix.length();
+                matched_irods_path_prefix = irods_path_prefix;
+                matched_beegfs_prefix = iter.first;
+            }
         }
+    }
+
+    if (match_length > 0) {
+            beegfs_path = matched_beegfs_prefix + irods_path.substr(matched_irods_path_prefix.length());
+            return 0;
     }
 
     return -1;
@@ -751,11 +764,6 @@ void handle_other(const std::vector<std::pair<std::string, std::string> >& regis
         strncpy(dataObjInfo.filePath, beegfs_path.c_str(), MAX_NAME_LEN);
         strncpy(dataObjInfo.objPath, irods_path.c_str(), MAX_NAME_LEN);
 
-rodsLog(LOG_ERROR, "rsModDataObjMeta( %p, %p )", _comm, &modDataObjMetaInp);
-rodsLog(LOG_ERROR, "modDataObjMetaInp.dataObjInfo->dataSize = %d", modDataObjMetaInp.dataObjInfo->dataSize);
-rodsLog(LOG_ERROR, "modDataObjMetaInp.dataObjInfo->filePath = %s", modDataObjMetaInp.dataObjInfo->filePath);
-rodsLog(LOG_ERROR, "modDataObjMetaInp.dataObjInfo->objPath = %s", modDataObjMetaInp.dataObjInfo->objPath);
-rodsLog(LOG_ERROR, "modDataObjMetaInp.regParam->len= %d", modDataObjMetaInp.regParam->len);
         status = rsModDataObjMeta( _comm, &modDataObjMetaInp );
 
         if ( status < 0 ) {
@@ -772,8 +780,6 @@ void handle_rename_file(const std::vector<std::pair<std::string, std::string> >&
         const std::string& beegfs_path, const std::string& object_name, 
         const ChangeDescriptor::ObjectTypeEnum& object_type, const std::string& parent_objectIdentifier, const int64_t& file_size,
         rsComm_t* _comm, icatSessionStruct *icss, const rodsLong_t& user_id, bool direct_db_access_flag) {
-
-rodsLog(LOG_ERROR, "beegfs_path: %s", beegfs_path.c_str());
 
     int status;
 
@@ -905,11 +911,7 @@ void handle_rename_dir(const std::vector<std::pair<std::string, std::string> >& 
         // get the parent's path - using parent's objectIdentifier
         std::vector<std::string> bindVars;
         bindVars.push_back(parent_objectIdentifier);
-rodsLog(LOG_ERROR, "%s:%i - %s()", __FILE__, __LINE__, __FUNCTION__);
-rodsLog(LOG_ERROR, "parent_objectIdentifier=%s", parent_objectIdentifier.c_str());
-rodsLog(LOG_ERROR, "cmlGetStringValueFromSql(%s, parent_path_cstr, %d, bindVars[%s], icss)", get_collection_path_from_objectIdentifier_sql.c_str(), MAX_NAME_LEN, parent_objectIdentifier.c_str());
         status = cmlGetStringValueFromSql(get_collection_path_from_objectIdentifier_sql.c_str(), parent_path_cstr, MAX_NAME_LEN, bindVars, icss);
-rodsLog(LOG_ERROR, "%s:%i - %s()", __FILE__, __LINE__, __FUNCTION__);
         std::string parent_path(parent_path_cstr);
         if (status != 0) {
             rodsLog(LOG_ERROR, "Error looking up parent collection for rename for collection %s.  Error is %i", objectIdentifier.c_str(), status);
