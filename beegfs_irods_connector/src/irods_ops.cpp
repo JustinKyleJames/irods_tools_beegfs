@@ -13,19 +13,19 @@
 #include "genQuery.h"
 
 // local includes
-//#include "../../irods_lustre_api/src/inout_structs.h"
+//#include "../../irods_beegfs_api/src/inout_structs.h"
 #include "inout_structs.h"
 #include "irods_ops.hpp"
 #include "logging.hpp"
 #include "config.hpp"
-#include "lustre_irods_errors.hpp"
+#include "beegfs_irods_errors.hpp"
 
 // other includes
 #include <string>
 #include <stdio.h>
 #include <boost/filesystem.hpp>
 
-lustre_irods_connection::~lustre_irods_connection() {
+beegfs_irods_connection::~beegfs_irods_connection() {
     if (irods_conn) {
         LOG(LOG_DBG, "disconnecting irods - thread %u\n", thread_number);
         rcDisconnect(irods_conn);
@@ -34,20 +34,20 @@ lustre_irods_connection::~lustre_irods_connection() {
     irods_conn = nullptr;    
 }
 
-int lustre_irods_connection::send_change_map_to_irods(irodsLustreApiInp_t *inp) const {
+int beegfs_irods_connection::send_change_map_to_irods(irodsBeegfsApiInp_t *inp) const {
 
 
     LOG(LOG_DBG,"calling send_change_map_to_irods\n");
 
     if (nullptr == inp) {
         LOG(LOG_ERR, "Null inp sent to %s - %d\n", __FUNCTION__, __LINE__);
-        return lustre_irods::INVALID_OPERAND_ERROR;
+        return beegfs_irods::INVALID_OPERAND_ERROR;
     }    
 
 
     if (!irods_conn) {
         LOG(LOG_ERR,"Error:  Called send_change_map_to_irods() without an active irods_conn\n");
-        return lustre_irods::IRODS_CONNECTION_ERROR;
+        return beegfs_irods::IRODS_CONNECTION_ERROR;
     }
 
     irods::pack_entry_table& pk_tbl = irods::get_pack_table();
@@ -62,9 +62,9 @@ int lustre_irods_connection::send_change_map_to_irods(irodsLustreApiInp_t *inp) 
 
     if ( status < 0 ) {
         LOG(LOG_ERR, "\nERROR - failed to call our api - %i\n", status);
-        returnVal = lustre_irods::IRODS_ERROR;
+        returnVal = beegfs_irods::IRODS_ERROR;
     } else {
-        irodsLustreApiOut_t* out = static_cast<irodsLustreApiOut_t*>( tmp_out );
+        irodsBeegfsApiOut_t* out = static_cast<irodsBeegfsApiOut_t*>( tmp_out );
         returnVal = out->status;
     }
 
@@ -72,16 +72,16 @@ int lustre_irods_connection::send_change_map_to_irods(irodsLustreApiInp_t *inp) 
     return returnVal;
 }
 
-int lustre_irods_connection::populate_irods_resc_id(lustre_irods_connector_cfg_t *config_struct_ptr) {
+int beegfs_irods_connection::populate_irods_resc_id(beegfs_irods_connector_cfg_t *config_struct_ptr) {
 
     if (nullptr == config_struct_ptr) {
         LOG(LOG_ERR, "Null config_struct_ptr sent to %s - %d\n", __FUNCTION__, __LINE__);
-        return lustre_irods::INVALID_OPERAND_ERROR;
+        return beegfs_irods::INVALID_OPERAND_ERROR;
     }
 
     if (!irods_conn) {
         LOG(LOG_ERR,"Error:  Called populate_irods_resc_id() without an active irods_conn\n");
-        return lustre_irods::IRODS_CONNECTION_ERROR;
+        return beegfs_irods::IRODS_CONNECTION_ERROR;
     }
 
     genQueryInp_t  gen_inp;
@@ -101,10 +101,10 @@ int lustre_irods_connection::populate_irods_resc_id(lustre_irods_connector_cfg_t
     if ( status < 0 || gen_out->rowCnt < 1) {
         if ( CAT_NO_ROWS_FOUND == status ) {
             LOG(LOG_ERR, "No resource found in iRODS for resc_name %s\n", config_struct_ptr->irods_resource_name.c_str());
-            return lustre_irods::RESOURCE_NOT_FOUND_ERROR;
+            return beegfs_irods::RESOURCE_NOT_FOUND_ERROR;
         }
         LOG(LOG_ERR, "Lookup resource id for resource %s returned error\n", config_struct_ptr->irods_resource_name.c_str());
-        return lustre_irods::IRODS_ERROR;
+        return beegfs_irods::IRODS_ERROR;
     }
 
     sqlResult_t* resource_ids = getSqlResultByInx(gen_out, COL_R_RESC_ID);
@@ -113,7 +113,7 @@ int lustre_irods_connection::populate_irods_resc_id(lustre_irods_connector_cfg_t
         clearGenQueryInp(&gen_inp);
         freeGenQueryOut(&gen_out);
         LOG(LOG_ERR, "Error while translating resource name to resource id\n");
-        return lustre_irods::RESOURCE_NOT_FOUND_ERROR;
+        return beegfs_irods::RESOURCE_NOT_FOUND_ERROR;
     }
 
     try {
@@ -122,7 +122,7 @@ int lustre_irods_connection::populate_irods_resc_id(lustre_irods_connector_cfg_t
         clearGenQueryInp(&gen_inp);
         freeGenQueryOut(&gen_out);
         LOG(LOG_ERR, "Error translating resource id returned from iRODS to an integer.\n");
-        return lustre_irods::INVALID_RESOURCE_ID_ERROR;
+        return beegfs_irods::INVALID_RESOURCE_ID_ERROR;
     }
 
     clearGenQueryInp(&gen_inp);
@@ -133,7 +133,7 @@ int lustre_irods_connection::populate_irods_resc_id(lustre_irods_connector_cfg_t
 // Instantiate an iRODS connection.  If config_struct_ptr is null then the irods environment is used.  If config_struct_ptr is not
 // null and there is an entry for this thread_number in config_struct_ptr->irods_connection_list then use the host and port from that.
 // Otherwise use the irods environment for everything.
-int lustre_irods_connection::instantiate_irods_connection(const lustre_irods_connector_cfg_t *config_struct_ptr, int thread_number) {
+int beegfs_irods_connection::instantiate_irods_connection(const beegfs_irods_connector_cfg_t *config_struct_ptr, int thread_number) {
 
     rodsEnv myEnv;
     int status;
@@ -141,7 +141,7 @@ int lustre_irods_connection::instantiate_irods_connection(const lustre_irods_con
 
     status = getRodsEnv( &myEnv );
     if (status < 0) {
-        return lustre_irods::IRODS_ENVIRONMENT_ERROR;
+        return beegfs_irods::IRODS_ENVIRONMENT_ERROR;
     }
 
     std::string irods_host;
@@ -165,7 +165,7 @@ int lustre_irods_connection::instantiate_irods_connection(const lustre_irods_con
     LOG(LOG_DBG, "irods_conn is %i for thread %d.\n", irods_conn != nullptr, thread_number);
 
     if (nullptr == irods_conn) {
-        return lustre_irods::IRODS_CONNECTION_ERROR;
+        return beegfs_irods::IRODS_CONNECTION_ERROR;
     }
 
     status = clientLogin(irods_conn);
@@ -173,7 +173,7 @@ int lustre_irods_connection::instantiate_irods_connection(const lustre_irods_con
         rcDisconnect(irods_conn);
         irods_conn = nullptr;
         LOG(LOG_ERR, "Error on clientLogin() - %i\n", status);
-        return lustre_irods::IRODS_ERROR;
+        return beegfs_irods::IRODS_ERROR;
     }
 
     return 0;

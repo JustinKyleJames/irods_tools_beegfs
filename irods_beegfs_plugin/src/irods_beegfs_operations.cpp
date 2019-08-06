@@ -64,33 +64,33 @@
 extern const char *cllBindVars[MAX_BIND_VARS];
 extern int cllBindVarCount;
 
-const std::string fidstr_avu_key = "lustre_identifier";
+const std::string objectIdentifier_avu_key = "beegfs_identifier";
 
 const std::string update_data_size_sql = "update R_DATA_MAIN set data_size = ? where data_id = (select * from ("
                    "select R_DATA_MAIN.data_id "
                    "from R_DATA_MAIN "
                    "inner join R_OBJT_METAMAP on R_DATA_MAIN.data_id = R_OBJT_METAMAP.object_id "
                    "inner join R_META_MAIN on R_META_MAIN.meta_id = R_OBJT_METAMAP.meta_id "
-                   "where R_META_MAIN.meta_attr_name = '" + fidstr_avu_key + "' and R_META_MAIN.meta_attr_value = ?)temp_table)";
+                   "where R_META_MAIN.meta_attr_name = '" + objectIdentifier_avu_key + "' and R_META_MAIN.meta_attr_value = ?)temp_table)";
 
 const std::string update_data_object_for_rename_sql = "update R_DATA_MAIN set data_name = ?, data_path = ?, coll_id = (select * from ("
                    "select R_COLL_MAIN.coll_id "
                    "from R_COLL_MAIN "
                    "inner join R_OBJT_METAMAP on R_COLL_MAIN.coll_id = R_OBJT_METAMAP.object_id "
                    "inner join R_META_MAIN on R_META_MAIN.meta_id = R_OBJT_METAMAP.meta_id "
-                   "where R_META_MAIN.meta_attr_name = '" + fidstr_avu_key + "' and R_META_MAIN.meta_attr_value = ?)temp_table)"
+                   "where R_META_MAIN.meta_attr_name = '" + objectIdentifier_avu_key + "' and R_META_MAIN.meta_attr_value = ?)temp_table)"
                    "where data_id = (select * from ("
                    "select R_DATA_MAIN.data_id "
                    "from R_DATA_MAIN "
                    "inner join R_OBJT_METAMAP on R_DATA_MAIN.data_id = R_OBJT_METAMAP.object_id "
                    "inner join R_META_MAIN on R_META_MAIN.meta_id = R_OBJT_METAMAP.meta_id "
-                   "where R_META_MAIN.meta_attr_name = '" + fidstr_avu_key + "' and R_META_MAIN.meta_attr_value = ?)temp_table2)";
+                   "where R_META_MAIN.meta_attr_name = '" + objectIdentifier_avu_key + "' and R_META_MAIN.meta_attr_value = ?)temp_table2)";
 
-const std::string get_collection_path_from_fidstr_sql = "select R_COLL_MAIN.coll_name "
+const std::string get_collection_path_from_objectIdentifier_sql = "select R_COLL_MAIN.coll_name "
                    "from R_COLL_MAIN "
                    "inner join R_OBJT_METAMAP on R_COLL_MAIN.coll_id = R_OBJT_METAMAP.object_id "
                    "inner join R_META_MAIN on R_META_MAIN.meta_id = R_OBJT_METAMAP.meta_id "
-                   "where R_META_MAIN.meta_attr_name = '" + fidstr_avu_key + "' and R_META_MAIN.meta_attr_value = ?";
+                   "where R_META_MAIN.meta_attr_name = '" + objectIdentifier_avu_key + "' and R_META_MAIN.meta_attr_value = ?";
 
 
 const std::string update_collection_for_rename_sql = "update R_COLL_MAIN set coll_name = ?, parent_coll_name = ? "
@@ -99,33 +99,33 @@ const std::string update_collection_for_rename_sql = "update R_COLL_MAIN set col
                    "from R_COLL_MAIN "
                    "inner join R_OBJT_METAMAP on R_COLL_MAIN.coll_id = R_OBJT_METAMAP.object_id "
                    "inner join R_META_MAIN on R_META_MAIN.meta_id = R_OBJT_METAMAP.meta_id "
-                   "where R_META_MAIN.meta_attr_name = '" + fidstr_avu_key + "' and R_META_MAIN.meta_attr_value = ?)temp_table)";
+                   "where R_META_MAIN.meta_attr_name = '" + objectIdentifier_avu_key + "' and R_META_MAIN.meta_attr_value = ?)temp_table)";
 
 const std::string remove_object_meta_sql = "delete from R_OBJT_METAMAP where object_id = (select * from ("
                    "select R_OBJT_METAMAP.object_id "
                    "from R_OBJT_METAMAP "
                    "inner join R_META_MAIN on R_META_MAIN.meta_id = R_OBJT_METAMAP.meta_id "
-                   "where R_META_MAIN.meta_attr_name = '" + fidstr_avu_key + "' and R_META_MAIN.meta_attr_value = ?)temp_table)";
+                   "where R_META_MAIN.meta_attr_name = '" + objectIdentifier_avu_key + "' and R_META_MAIN.meta_attr_value = ?)temp_table)";
 
 const std::string unlink_sql = "delete from R_DATA_MAIN where data_id = (select * from ("
                    "select R_DATA_MAIN.data_id "
                    "from R_DATA_MAIN "
                    "inner join R_OBJT_METAMAP on R_DATA_MAIN.data_id = R_OBJT_METAMAP.object_id "
                    "inner join R_META_MAIN on R_META_MAIN.meta_id = R_OBJT_METAMAP.meta_id "
-                   "where R_META_MAIN.meta_attr_name = '" + fidstr_avu_key + "' and R_META_MAIN.meta_attr_value = ?)temp_table)";
+                   "where R_META_MAIN.meta_attr_name = '" + objectIdentifier_avu_key + "' and R_META_MAIN.meta_attr_value = ?)temp_table)";
 
 const std::string rmdir_sql = "delete from R_COLL_MAIN where coll_id = (select * from ("
                    "select R_COLL_MAIN.coll_id "
                    "from R_COLL_MAIN "
                    "inner join R_OBJT_METAMAP on R_COLL_MAIN.coll_id = R_OBJT_METAMAP.object_id "
                    "inner join R_META_MAIN on R_META_MAIN.meta_id = R_OBJT_METAMAP.meta_id "
-                   "where R_META_MAIN.meta_attr_name = '" + fidstr_avu_key + "' and R_META_MAIN.meta_attr_value = ?)temp_table)";
+                   "where R_META_MAIN.meta_attr_name = '" + objectIdentifier_avu_key + "' and R_META_MAIN.meta_attr_value = ?)temp_table)";
 
-const std::string get_collection_id_from_fidstr_sql = "select R_COLL_MAIN.coll_id "
+const std::string get_collection_id_from_objectIdentifier_sql = "select R_COLL_MAIN.coll_id "
                    "from R_COLL_MAIN "
                    "inner join R_OBJT_METAMAP on R_COLL_MAIN.coll_id = R_OBJT_METAMAP.object_id "
                    "inner join R_META_MAIN on R_META_MAIN.meta_id = R_OBJT_METAMAP.meta_id "
-                   "where R_META_MAIN.meta_attr_name = '" + fidstr_avu_key + "' and R_META_MAIN.meta_attr_value = ?";
+                   "where R_META_MAIN.meta_attr_name = '" + objectIdentifier_avu_key + "' and R_META_MAIN.meta_attr_value = ?";
 
 
 const std::string insert_data_obj_sql = "insert into R_DATA_MAIN (data_id, coll_id, data_name, data_repl_num, data_type_name, "
@@ -205,15 +205,15 @@ int find_irods_path_with_avu(rsComm_t *_conn, const std::string& attr, const std
     return 0;
 }
 
-// Returns the path in irods for a file in lustre based on the mapping in register_map.  
+// Returns the path in irods for a file in beegfs based on the mapping in register_map.  
 // If the prefix is not in register_map then the function returns -1, otherwise it returns 0.
-int lustre_path_to_irods_path(const std::string& lustre_path, const std::vector<std::pair<std::string, std::string> >& register_map,
+int beegfs_path_to_irods_path(const std::string& beegfs_path, const std::vector<std::pair<std::string, std::string> >& register_map,
         std::string& irods_path) {
 
     for (auto& iter : register_map) {
-        const std::string& lustre_path_prefix = iter.first;
-        if (lustre_path.compare(0, lustre_path_prefix.length(), lustre_path_prefix) == 0) {
-            irods_path = iter.second + lustre_path.substr(lustre_path_prefix.length());
+        const std::string& beegfs_path_prefix = iter.first;
+        if (beegfs_path.compare(0, beegfs_path_prefix.length(), beegfs_path_prefix) == 0) {
+            irods_path = iter.second + beegfs_path.substr(beegfs_path_prefix.length());
             return 0;
         }
     }
@@ -221,15 +221,15 @@ int lustre_path_to_irods_path(const std::string& lustre_path, const std::vector<
     return -1;
 }
 
-// Returns the path in lustre for a data object in irods based on the mapping in register_map.  
+// Returns the path in beegfs for a data object in irods based on the mapping in register_map.  
 // If the prefix is not in register_map then the function returns -1, otherwise it returns 0.
-int irods_path_to_lustre_path(const std::string& irods_path, const std::vector<std::pair<std::string, std::string> >& register_map,
-        std::string& lustre_path) {
+int irods_path_to_beegfs_path(const std::string& irods_path, const std::vector<std::pair<std::string, std::string> >& register_map,
+        std::string& beegfs_path) {
 
     for (auto& iter : register_map) {
         const std::string& irods_path_prefix = iter.second;
         if (irods_path.compare(0, irods_path_prefix.length(), irods_path_prefix) == 0) {
-            lustre_path = iter.first + irods_path.substr(irods_path_prefix.length());
+            beegfs_path = iter.first + irods_path.substr(irods_path_prefix.length());
             return 0;
         }
     }
@@ -251,18 +251,18 @@ int get_user_id(rsComm_t* _comm, icatSessionStruct *icss, rodsLong_t& user_id, b
 }
 
 void handle_create(const std::vector<std::pair<std::string, std::string> >& register_map, 
-        const int64_t& resource_id, const std::string& resource_name, const std::string& fidstr, 
-        const std::string& lustre_path, const std::string& object_name, 
-        const ChangeDescriptor::ObjectTypeEnum& object_type, const std::string& parent_fidstr, const int64_t& file_size,
+        const int64_t& resource_id, const std::string& resource_name, const std::string& objectIdentifier, 
+        const std::string& beegfs_path, const std::string& object_name, 
+        const ChangeDescriptor::ObjectTypeEnum& object_type, const std::string& parent_objectIdentifier, const int64_t& file_size,
         rsComm_t* _comm, icatSessionStruct *icss, const rodsLong_t& user_id, bool direct_db_access_flag) {
 
 
     int status;
   
     std::string irods_path; 
-    if (lustre_path_to_irods_path(lustre_path.c_str(), register_map, irods_path) < 0) {
-        rodsLog(LOG_NOTICE, "Skipping entry because lustre_path [%s] is not in register_map.",
-                   lustre_path.c_str()); 
+    if (beegfs_path_to_irods_path(beegfs_path.c_str(), register_map, irods_path) < 0) {
+        rodsLog(LOG_NOTICE, "Skipping entry because beegfs_path [%s] is not in register_map.",
+                   beegfs_path.c_str()); 
         return;
     }
 
@@ -284,14 +284,14 @@ void handle_create(const std::vector<std::pair<std::string, std::string> >& regi
 
         //boost::filesystem::path p(irods_path);
 
-        // get collection id from parent fidstr
+        // get collection id from parent objectIdentifier
         rodsLong_t coll_id;
         std::vector<std::string> bindVars;
-        bindVars.push_back(parent_fidstr);
-        status = cmlGetIntegerValueFromSql(get_collection_id_from_fidstr_sql.c_str(), &coll_id, bindVars, icss );
+        bindVars.push_back(parent_objectIdentifier);
+        status = cmlGetIntegerValueFromSql(get_collection_id_from_objectIdentifier_sql.c_str(), &coll_id, bindVars, icss );
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error during registration object %s.  Error getting collection id for collection with fidstr=%s.  Error is %i", 
-                    fidstr.c_str(), parent_fidstr.c_str(),  status);
+            rodsLog(LOG_ERROR, "Error during registration object %s.  Error getting collection id for collection with objectIdentifier=%s.  Error is %i", 
+                    objectIdentifier.c_str(), parent_objectIdentifier.c_str(),  status);
             return;
         }
 
@@ -300,14 +300,14 @@ void handle_create(const std::vector<std::pair<std::string, std::string> >& regi
         cllBindVars[1] = std::to_string(coll_id).c_str();
         cllBindVars[2] = object_name.c_str();
         cllBindVars[3] = std::to_string(file_size).c_str();  
-        cllBindVars[4] = lustre_path.c_str(); 
+        cllBindVars[4] = beegfs_path.c_str(); 
         cllBindVars[5] = _comm->clientUser.userName;
         cllBindVars[6] = _comm->clientUser.rodsZone;
         cllBindVars[7] = std::to_string(resource_id).c_str(); 
         cllBindVarCount = 8;
         status = cmlExecuteNoAnswerSql(insert_data_obj_sql.c_str(), icss);
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error registering object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error registering object %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 
@@ -315,7 +315,7 @@ void handle_create(const std::vector<std::pair<std::string, std::string> >& regi
 #if !defined(COCKROACHDB_ICAT)
         status =  cmlExecuteNoAnswerSql("commit", icss);
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error committing insertion of new data_object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error committing insertion of new data_object %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         } 
 #endif
@@ -326,26 +326,26 @@ void handle_create(const std::vector<std::pair<std::string, std::string> >& regi
         cllBindVarCount = 2;
         status = cmlExecuteNoAnswerSql(insert_user_ownership_data_object_sql.c_str(), icss);
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error adding onwership to object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error adding onwership to object %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 
 #if !defined(COCKROACHDB_ICAT)
         status =  cmlExecuteNoAnswerSql("commit", icss);
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error committing ownership of new data_object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error committing ownership of new data_object %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 #endif
 
-        // add lustre_identifier metadata
+        // add beegfs_identifier metadata
         keyValPair_t reg_param;
         memset(&reg_param, 0, sizeof(reg_param));
-        addKeyVal(&reg_param, fidstr_avu_key.c_str(), fidstr.c_str());
-        status = chlAddAVUMetadata(_comm, 0, "-d", irods_path.c_str(), fidstr_avu_key.c_str(), fidstr.c_str(), "");
+        addKeyVal(&reg_param, objectIdentifier_avu_key.c_str(), objectIdentifier.c_str());
+        status = chlAddAVUMetadata(_comm, 0, "-d", irods_path.c_str(), objectIdentifier_avu_key.c_str(), objectIdentifier.c_str(), "");
         rodsLog(LOG_NOTICE, "Return value from chlAddAVUMetdata = %i", status);
         if (status < 0) {
-            rodsLog(LOG_ERROR, "Error adding %s metadata to object %s.  Error is %i", fidstr_avu_key.c_str(), fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error adding %s metadata to object %s.  Error is %i", objectIdentifier_avu_key.c_str(), objectIdentifier.c_str(), status);
             return;
         }
 
@@ -354,30 +354,30 @@ void handle_create(const std::vector<std::pair<std::string, std::string> >& regi
         dataObjInp_t dataObjInp;
         memset(&dataObjInp, 0, sizeof(dataObjInp));
         strncpy(dataObjInp.objPath, irods_path.c_str(), MAX_NAME_LEN);
-        addKeyVal(&dataObjInp.condInput, FILE_PATH_KW, lustre_path.c_str());
+        addKeyVal(&dataObjInp.condInput, FILE_PATH_KW, beegfs_path.c_str());
         addKeyVal(&dataObjInp.condInput, RESC_NAME_KW, resource_name.c_str());
         addKeyVal(&dataObjInp.condInput, RESC_HIER_STR_KW, resource_name.c_str());
 
         status = rsPhyPathReg(_comm, &dataObjInp);
         //status = filePathReg(_comm, &dataObjInp, resource_name.c_str());
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error registering object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error registering object %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 
         // freeKeyValPairStruct(&dataobjInp.condInput);
  
-        // add lustre_identifier metadata
+        // add beegfs_identifier metadata
         modAVUMetadataInp_t modAVUMetadataInp;
         memset(&modAVUMetadataInp, 0, sizeof(modAVUMetadataInp_t)); 
         modAVUMetadataInp.arg0 = "add";
         modAVUMetadataInp.arg1 = "-d";
         modAVUMetadataInp.arg2 = const_cast<char*>(irods_path.c_str());
-        modAVUMetadataInp.arg3 = const_cast<char*>(fidstr_avu_key.c_str());
-        modAVUMetadataInp.arg4 = const_cast<char*>(fidstr.c_str());
+        modAVUMetadataInp.arg3 = const_cast<char*>(objectIdentifier_avu_key.c_str());
+        modAVUMetadataInp.arg4 = const_cast<char*>(objectIdentifier.c_str());
         status = rsModAVUMetadata(_comm, &modAVUMetadataInp);
         if (status < 0) {
-            rodsLog(LOG_ERROR, "Error adding %s metadata to object %s.  Error is %i", fidstr_avu_key.c_str(), fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error adding %s metadata to object %s.  Error is %i", objectIdentifier_avu_key.c_str(), objectIdentifier.c_str(), status);
             return;
         }
 
@@ -386,20 +386,20 @@ void handle_create(const std::vector<std::pair<std::string, std::string> >& regi
 }
 
 void handle_batch_create(const std::vector<std::pair<std::string, std::string> >& register_map, const int64_t& resource_id,
-        const std::string& resource_name, const std::vector<std::string>& fidstr_list, const std::vector<std::string>& lustre_path_list,
-        const std::vector<std::string>& object_name_list, const std::vector<std::string>& parent_fidstr_list,
+        const std::string& resource_name, const std::vector<std::string>& objectIdentifier_list, const std::vector<std::string>& beegfs_path_list,
+        const std::vector<std::string>& object_name_list, const std::vector<std::string>& parent_objectIdentifier_list,
         const std::vector<int64_t>& file_size_list, const int64_t& maximum_records_per_sql_command, rsComm_t* _comm, icatSessionStruct *icss, 
         const rodsLong_t& user_id, bool set_metadata_for_storage_tiering_time_violation, const std::string& metadata_key_for_storage_tiering_time_violation) {
 
-    size_t insert_count = fidstr_list.size();
+    size_t insert_count = objectIdentifier_list.size();
     int status;
 
     if (insert_count == 0) {
         return;
     }
 
-    if (lustre_path_list.size() != insert_count || object_name_list.size() != insert_count ||
-            parent_fidstr_list.size() != insert_count || file_size_list.size() != insert_count) {
+    if (beegfs_path_list.size() != insert_count || object_name_list.size() != insert_count ||
+            parent_objectIdentifier_list.size() != insert_count || file_size_list.size() != insert_count) {
 
         rodsLog(LOG_ERROR, "Handle batch create.  Received lists of differing size");
         return;
@@ -422,32 +422,32 @@ void handle_batch_create(const std::vector<std::pair<std::string, std::string> >
                              "data_size, resc_name, data_path, data_owner_name, data_owner_zone, data_is_dirty, data_map_id, resc_id) "
                         "values ";
 
-    // cache the collection id's from parent_fidstr
-    std::map<std::string, rodsLong_t> fidstr_to_collection_id_map;
+    // cache the collection id's from parent_objectIdentifier
+    std::map<std::string, rodsLong_t> objectIdentifier_to_collection_id_map;
 
     for (size_t i = 0; i < insert_count; ++i) {
 
         rodsLong_t coll_id;
 
-        auto iter = fidstr_to_collection_id_map.find(parent_fidstr_list[i]);
+        auto iter = objectIdentifier_to_collection_id_map.find(parent_objectIdentifier_list[i]);
 
-        if (iter != fidstr_to_collection_id_map.end()) {
+        if (iter != objectIdentifier_to_collection_id_map.end()) {
             coll_id = iter->second;
         } else {
             std::vector<std::string> bindVars;
-            bindVars.push_back(parent_fidstr_list[i]);
-            status = cmlGetIntegerValueFromSql(get_collection_id_from_fidstr_sql.c_str(), &coll_id, bindVars, icss );
+            bindVars.push_back(parent_objectIdentifier_list[i]);
+            status = cmlGetIntegerValueFromSql(get_collection_id_from_objectIdentifier_sql.c_str(), &coll_id, bindVars, icss );
             if (status != 0) {
-                rodsLog(LOG_ERROR, "Error during registration object %s.  Error getting collection id for collection with fidstr=%s.  Error is %i", 
-                        fidstr_list[i].c_str(), parent_fidstr_list[i].c_str(), status);
+                rodsLog(LOG_ERROR, "Error during registration object %s.  Error getting collection id for collection with objectIdentifier=%s.  Error is %i", 
+                        objectIdentifier_list[i].c_str(), parent_objectIdentifier_list[i].c_str(), status);
                 continue;
             }
 
-            fidstr_to_collection_id_map[parent_fidstr_list[i]] = coll_id;
+            objectIdentifier_to_collection_id_map[parent_objectIdentifier_list[i]] = coll_id;
         }
 
         insert_sql += "(" + std::to_string(data_obj_sequences[i]) + ", " + std::to_string(coll_id) + ", '" + object_name_list[i] + "', " +
-            std::to_string(0) +  ", 'generic', " + std::to_string(file_size_list[i]) + ", 'EMPTY_RESC_NAME', '" + lustre_path_list[i] + "', '" + 
+            std::to_string(0) +  ", 'generic', " + std::to_string(file_size_list[i]) + ", 'EMPTY_RESC_NAME', '" + beegfs_path_list[i] + "', '" + 
             _comm->clientUser.userName + "', '" + _comm->clientUser.rodsZone + "', 0, 0, " + std::to_string(resource_id) + ")";
 
         if (i < insert_count - 1) {
@@ -475,8 +475,8 @@ void handle_batch_create(const std::vector<std::pair<std::string, std::string> >
     insert_sql = "insert into R_META_MAIN (meta_id, meta_attr_name, meta_attr_value) values ";
 
     for (size_t i = 0; i < insert_count; ++i) {
-        insert_sql += "(" + std::to_string(metadata_sequences[i]) + ", '" + fidstr_avu_key + "', '" + 
-            fidstr_list[i] + "')";
+        insert_sql += "(" + std::to_string(metadata_sequences[i]) + ", '" + objectIdentifier_avu_key + "', '" + 
+            objectIdentifier_list[i] + "')";
 
         if (i < insert_count - 1) {
             insert_sql += ", ";
@@ -617,18 +617,18 @@ void handle_batch_create(const std::vector<std::pair<std::string, std::string> >
 
 
 void handle_mkdir(const std::vector<std::pair<std::string, std::string> >& register_map, 
-        const int64_t& resource_id, const std::string& resource_name, const std::string& fidstr, 
-        const std::string& lustre_path, const std::string& object_name, 
-        const ChangeDescriptor::ObjectTypeEnum& object_type, const std::string& parent_fidstr, const int64_t& file_size,
+        const int64_t& resource_id, const std::string& resource_name, const std::string& objectIdentifier, 
+        const std::string& beegfs_path, const std::string& object_name, 
+        const ChangeDescriptor::ObjectTypeEnum& object_type, const std::string& parent_objectIdentifier, const int64_t& file_size,
         rsComm_t* _comm, icatSessionStruct *icss, const rodsLong_t& user_id, bool direct_db_access_flag) {
 
 
     int status;
 
     std::string irods_path;
-    if (lustre_path_to_irods_path(lustre_path, register_map, irods_path) < 0) {
-        rodsLog(LOG_NOTICE, "Skipping mkdir on lustre_path [%s] which is not in register_map.",
-               lustre_path.c_str());
+    if (beegfs_path_to_irods_path(beegfs_path, register_map, irods_path) < 0) {
+        rodsLog(LOG_NOTICE, "Skipping mkdir on beegfs_path [%s] which is not in register_map.",
+               beegfs_path.c_str());
         return;
     }
 
@@ -644,18 +644,18 @@ void handle_mkdir(const std::vector<std::pair<std::string, std::string> >& regis
 
         // if collection already exists (-809000), do not consider it an error
         if (0 > status && -809000 != status) {
-            rodsLog(LOG_ERROR, "Error registering collection %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error registering collection %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         } 
 
-        // add lustre_identifier metadata
+        // add beegfs_identifier metadata
         keyValPair_t reg_param;
         memset(&reg_param, 0, sizeof(reg_param));
-        addKeyVal(&reg_param, fidstr_avu_key.c_str(), fidstr.c_str());
-        status = chlAddAVUMetadata(_comm, 0, "-C", irods_path.c_str(), fidstr_avu_key.c_str(), fidstr.c_str(), "");
+        addKeyVal(&reg_param, objectIdentifier_avu_key.c_str(), objectIdentifier.c_str());
+        status = chlAddAVUMetadata(_comm, 0, "-C", irods_path.c_str(), objectIdentifier_avu_key.c_str(), objectIdentifier.c_str(), "");
         rodsLog(LOG_NOTICE, "Return value from chlAddAVUMetadata = %i", status);
         if (status < 0) {
-            rodsLog(LOG_ERROR, "Error adding %s metadata to object %s.  Error is %i", fidstr_avu_key.c_str(), fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error adding %s metadata to object %s.  Error is %i", objectIdentifier_avu_key.c_str(), objectIdentifier.c_str(), status);
             return;
         }
 
@@ -666,25 +666,26 @@ void handle_mkdir(const std::vector<std::pair<std::string, std::string> >& regis
         collInp_t coll_input;
         memset(&coll_input, 0, sizeof(coll_input));
         strncpy(coll_input.collName, irods_path.c_str(), MAX_NAME_LEN);
+        rodsLog(LOG_NOTICE, "rsCollCreate: collName=%s", irods_path.c_str());
         status = rsCollCreate(_comm, &coll_input); 
 
         // if collection already exists (-809000), do not consider it an error
         if (0 > status && -809000 != status) {
-            rodsLog(LOG_ERROR, "Error registering collection %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error registering collection %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         } 
 
-        // add lustre_identifier metadata
+        // add beegfs_identifier metadata
         modAVUMetadataInp_t modAVUMetadataInp;
         memset(&modAVUMetadataInp, 0, sizeof(modAVUMetadataInp_t)); 
         modAVUMetadataInp.arg0 = "add";
         modAVUMetadataInp.arg1 = "-C";
         modAVUMetadataInp.arg2 = const_cast<char*>(irods_path.c_str());
-        modAVUMetadataInp.arg3 = const_cast<char*>(fidstr_avu_key.c_str());
-        modAVUMetadataInp.arg4 = const_cast<char*>(fidstr.c_str());
+        modAVUMetadataInp.arg3 = const_cast<char*>(objectIdentifier_avu_key.c_str());
+        modAVUMetadataInp.arg4 = const_cast<char*>(objectIdentifier.c_str());
         status = rsModAVUMetadata(_comm, &modAVUMetadataInp);
         if (status < 0) {
-            rodsLog(LOG_ERROR, "Error adding %s metadata to object %s.  Error is %i", fidstr_avu_key.c_str(), fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error adding %s metadata to object %s.  Error is %i", objectIdentifier_avu_key.c_str(), objectIdentifier.c_str(), status);
             return;
         }
 
@@ -694,9 +695,9 @@ void handle_mkdir(const std::vector<std::pair<std::string, std::string> >& regis
 }
 
 void handle_other(const std::vector<std::pair<std::string, std::string> >& register_map, 
-        const int64_t& resource_id, const std::string& resource_name, const std::string& fidstr, 
-        const std::string& lustre_path, const std::string& object_name, 
-        const ChangeDescriptor::ObjectTypeEnum& object_type, const std::string& parent_fidstr, const int64_t& file_size,
+        const int64_t& resource_id, const std::string& resource_name, const std::string& objectIdentifier, 
+        const std::string& beegfs_path, const std::string& object_name, 
+        const ChangeDescriptor::ObjectTypeEnum& object_type, const std::string& parent_objectIdentifier, const int64_t& file_size,
         rsComm_t* _comm, icatSessionStruct *icss, const rodsLong_t& user_id, bool direct_db_access_flag) {
 
     int status;
@@ -705,12 +706,12 @@ void handle_other(const std::vector<std::pair<std::string, std::string> >& regis
 
         // read and update the file size
         cllBindVars[0] = std::to_string(file_size).c_str(); //file_size_str.c_str();
-        cllBindVars[1] = fidstr.c_str(); 
+        cllBindVars[1] = objectIdentifier.c_str(); 
         cllBindVarCount = 2;
         status = cmlExecuteNoAnswerSql(update_data_size_sql.c_str(), icss);
 
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error updating data_object_size for data_object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error updating data_object_size for data_object %s.  Error is %i", objectIdentifier.c_str(), status);
             cmlExecuteNoAnswerSql("rollback", icss);
             return;
         }
@@ -719,7 +720,7 @@ void handle_other(const std::vector<std::pair<std::string, std::string> >& regis
         status =  cmlExecuteNoAnswerSql("commit", icss);
 
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error committing update to data_object_size for data_object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error committing update to data_object_size for data_object %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         } 
 #endif
@@ -728,8 +729,8 @@ void handle_other(const std::vector<std::pair<std::string, std::string> >& regis
 
         std::string irods_path;
        
-        // look up object based on fidstr
-        status = find_irods_path_with_avu(_comm, fidstr_avu_key, fidstr, "", false, irods_path); 
+        // look up object based on objectIdentifier
+        status = find_irods_path_with_avu(_comm, objectIdentifier_avu_key, objectIdentifier, "", false, irods_path); 
 
         // modify the file size
         modDataObjMeta_t modDataObjMetaInp;
@@ -747,7 +748,7 @@ void handle_other(const std::vector<std::pair<std::string, std::string> >& regis
 
         modDataObjMetaInp.dataObjInfo = &dataObjInfo;
         dataObjInfo.dataSize = file_size; 
-        strncpy(dataObjInfo.filePath, lustre_path.c_str(), MAX_NAME_LEN);
+        strncpy(dataObjInfo.filePath, beegfs_path.c_str(), MAX_NAME_LEN);
         strncpy(dataObjInfo.objPath, irods_path.c_str(), MAX_NAME_LEN);
 
 rodsLog(LOG_ERROR, "rsModDataObjMeta( %p, %p )", _comm, &modDataObjMetaInp);
@@ -758,7 +759,7 @@ rodsLog(LOG_ERROR, "modDataObjMetaInp.regParam->len= %d", modDataObjMetaInp.regP
         status = rsModDataObjMeta( _comm, &modDataObjMetaInp );
 
         if ( status < 0 ) {
-            rodsLog(LOG_ERROR, "Error updating data object rename for data_object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error updating data object rename for data_object %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 
@@ -767,12 +768,12 @@ rodsLog(LOG_ERROR, "modDataObjMetaInp.regParam->len= %d", modDataObjMetaInp.regP
 }
 
 void handle_rename_file(const std::vector<std::pair<std::string, std::string> >& register_map, 
-        const int64_t& resource_id, const std::string& resource_name, const std::string& fidstr, 
-        const std::string& lustre_path, const std::string& object_name, 
-        const ChangeDescriptor::ObjectTypeEnum& object_type, const std::string& parent_fidstr, const int64_t& file_size,
+        const int64_t& resource_id, const std::string& resource_name, const std::string& objectIdentifier, 
+        const std::string& beegfs_path, const std::string& object_name, 
+        const ChangeDescriptor::ObjectTypeEnum& object_type, const std::string& parent_objectIdentifier, const int64_t& file_size,
         rsComm_t* _comm, icatSessionStruct *icss, const rodsLong_t& user_id, bool direct_db_access_flag) {
 
-rodsLog(LOG_ERROR, "lustre_path: %s", lustre_path.c_str());
+rodsLog(LOG_ERROR, "beegfs_path: %s", beegfs_path.c_str());
 
     int status;
 
@@ -780,14 +781,14 @@ rodsLog(LOG_ERROR, "lustre_path: %s", lustre_path.c_str());
 
         // update data_name, data_path, and coll_id
         cllBindVars[0] = object_name.c_str();
-        cllBindVars[1] = lustre_path.c_str();
-        cllBindVars[2] = parent_fidstr.c_str();
-        cllBindVars[3] = fidstr.c_str();
+        cllBindVars[1] = beegfs_path.c_str();
+        cllBindVars[2] = parent_objectIdentifier.c_str();
+        cllBindVars[3] = objectIdentifier.c_str();
         cllBindVarCount = 4;
         status = cmlExecuteNoAnswerSql(update_data_object_for_rename_sql.c_str(), icss);
 
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error updating data object rename for data_object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error updating data object rename for data_object %s.  Error is %i", objectIdentifier.c_str(), status);
             cmlExecuteNoAnswerSql("rollback", icss);
             return;
         }
@@ -796,7 +797,7 @@ rodsLog(LOG_ERROR, "lustre_path: %s", lustre_path.c_str());
         status =  cmlExecuteNoAnswerSql("commit", icss);
 
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error committing update to data object rename for data_object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error committing update to data object rename for data_object %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 #endif
@@ -805,17 +806,17 @@ rodsLog(LOG_ERROR, "lustre_path: %s", lustre_path.c_str());
         std::string old_irods_path;
         std::string new_parent_irods_path;
 
-        // look up object based on fidstr
-        status = find_irods_path_with_avu(_comm, fidstr_avu_key, fidstr, "", false, old_irods_path); 
+        // look up object based on objectIdentifier
+        status = find_irods_path_with_avu(_comm, objectIdentifier_avu_key, objectIdentifier, "", false, old_irods_path); 
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error renaming data object %s.  Could not find object by fidstr.", fidstr.c_str());
+            rodsLog(LOG_ERROR, "Error renaming data object %s.  Could not find object by objectIdentifier.", objectIdentifier.c_str());
             return;
         }
 
-        // look up new parent path based on parent fidstr
-        status = find_irods_path_with_avu(_comm, fidstr_avu_key, parent_fidstr, "", true, new_parent_irods_path); 
+        // look up new parent path based on parent objectIdentifier
+        status = find_irods_path_with_avu(_comm, objectIdentifier_avu_key, parent_objectIdentifier, "", true, new_parent_irods_path); 
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error renaming data object %s.  Could not find object by fidstr.", parent_fidstr.c_str());
+            rodsLog(LOG_ERROR, "Error renaming data object %s.  Could not find object by objectIdentifier.", parent_objectIdentifier.c_str());
             return;
         }
 
@@ -829,7 +830,7 @@ rodsLog(LOG_ERROR, "lustre_path: %s", lustre_path.c_str());
 
         keyValPair_t reg_param;
         memset( &reg_param, 0, sizeof( reg_param ) );
-        addKeyVal( &reg_param, FILE_PATH_KW, lustre_path.c_str());
+        addKeyVal( &reg_param, FILE_PATH_KW, beegfs_path.c_str());
         modDataObjMetaInp.regParam = &reg_param;
 
         modDataObjMetaInp.dataObjInfo = &dataObjInfo;
@@ -838,7 +839,7 @@ rodsLog(LOG_ERROR, "lustre_path: %s", lustre_path.c_str());
         status = rsModDataObjMeta( _comm, &modDataObjMetaInp );
 
         if ( status < 0 ) {
-            rodsLog(LOG_ERROR, "Error updating data object rename for data_object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error updating data object rename for data_object %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 
@@ -855,7 +856,7 @@ rodsLog(LOG_ERROR, "lustre_path: %s", lustre_path.c_str());
         status = rsDataObjRename(_comm, &dataObjRenameInp);
 
         if ( status < 0 ) {
-            rodsLog(LOG_ERROR, "Error updating data object rename for data_object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error updating data object rename for data_object %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 
@@ -864,9 +865,9 @@ rodsLog(LOG_ERROR, "lustre_path: %s", lustre_path.c_str());
 }
 
 void handle_rename_dir(const std::vector<std::pair<std::string, std::string> >& register_map, 
-        const int64_t& resource_id, const std::string& resource_name, const std::string& fidstr, 
-        const std::string& lustre_path, const std::string& object_name, 
-        const ChangeDescriptor::ObjectTypeEnum& object_type, const std::string& parent_fidstr, const int64_t& file_size,
+        const int64_t& resource_id, const std::string& resource_name, const std::string& objectIdentifier, 
+        const std::string& beegfs_path, const std::string& object_name, 
+        const ChangeDescriptor::ObjectTypeEnum& object_type, const std::string& parent_objectIdentifier, const int64_t& file_size,
         rsComm_t* _comm, icatSessionStruct *icss, const rodsLong_t& user_id, bool direct_db_access_flag) {
 
     int status;
@@ -876,17 +877,17 @@ void handle_rename_dir(const std::vector<std::pair<std::string, std::string> >& 
     std::string new_parent_irods_path;
     std::string new_irods_path;
 
-    // look up the old irods path for the collection based on fidstr
-    status = find_irods_path_with_avu(_comm, fidstr_avu_key, fidstr, "", true, old_irods_path); 
+    // look up the old irods path for the collection based on objectIdentifier
+    status = find_irods_path_with_avu(_comm, objectIdentifier_avu_key, objectIdentifier, "", true, old_irods_path); 
     if (status != 0) {
-    rodsLog(LOG_ERROR, "Error renaming data object %s.  Could not find object by fidstr.", fidstr.c_str());
+    rodsLog(LOG_ERROR, "Error renaming data object %s.  Could not find object by objectIdentifier.", objectIdentifier.c_str());
         return;
     }
 
-    // look up new parent path based on the new parent fidstr
-    status = find_irods_path_with_avu(_comm, fidstr_avu_key, parent_fidstr, "", true, new_parent_irods_path); 
+    // look up new parent path based on the new parent objectIdentifier
+    status = find_irods_path_with_avu(_comm, objectIdentifier_avu_key, parent_objectIdentifier, "", true, new_parent_irods_path); 
     if (status != 0) {
-        rodsLog(LOG_ERROR, "Error renaming data object %s.  Could not find object by fidstr.", parent_fidstr.c_str());
+        rodsLog(LOG_ERROR, "Error renaming data object %s.  Could not find object by objectIdentifier.", parent_objectIdentifier.c_str());
         return;
     }
 
@@ -901,17 +902,17 @@ void handle_rename_dir(const std::vector<std::pair<std::string, std::string> >& 
         char parent_path_cstr[MAX_NAME_LEN];
         std::string collection_path;
 
-        // get the parent's path - using parent's fidstr
+        // get the parent's path - using parent's objectIdentifier
         std::vector<std::string> bindVars;
-        bindVars.push_back(parent_fidstr);
+        bindVars.push_back(parent_objectIdentifier);
 rodsLog(LOG_ERROR, "%s:%i - %s()", __FILE__, __LINE__, __FUNCTION__);
-rodsLog(LOG_ERROR, "parent_fidstr=%s", parent_fidstr.c_str());
-rodsLog(LOG_ERROR, "cmlGetStringValueFromSql(%s, parent_path_cstr, %d, bindVars[%s], icss)", get_collection_path_from_fidstr_sql.c_str(), MAX_NAME_LEN, parent_fidstr.c_str());
-        status = cmlGetStringValueFromSql(get_collection_path_from_fidstr_sql.c_str(), parent_path_cstr, MAX_NAME_LEN, bindVars, icss);
+rodsLog(LOG_ERROR, "parent_objectIdentifier=%s", parent_objectIdentifier.c_str());
+rodsLog(LOG_ERROR, "cmlGetStringValueFromSql(%s, parent_path_cstr, %d, bindVars[%s], icss)", get_collection_path_from_objectIdentifier_sql.c_str(), MAX_NAME_LEN, parent_objectIdentifier.c_str());
+        status = cmlGetStringValueFromSql(get_collection_path_from_objectIdentifier_sql.c_str(), parent_path_cstr, MAX_NAME_LEN, bindVars, icss);
 rodsLog(LOG_ERROR, "%s:%i - %s()", __FILE__, __LINE__, __FUNCTION__);
         std::string parent_path(parent_path_cstr);
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error looking up parent collection for rename for collection %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error looking up parent collection for rename for collection %s.  Error is %i", objectIdentifier.c_str(), status);
             cmlExecuteNoAnswerSql("rollback", icss);
         }
 
@@ -923,12 +924,12 @@ rodsLog(LOG_ERROR, "%s:%i - %s()", __FILE__, __LINE__, __FUNCTION__);
         // update coll_name, parent_coll_name, and coll_id
         cllBindVars[0] = collection_path.c_str();
         cllBindVars[1] = parent_path.c_str();
-        cllBindVars[2] = fidstr.c_str();
+        cllBindVars[2] = objectIdentifier.c_str();
         cllBindVarCount = 3;
         status = cmlExecuteNoAnswerSql(update_collection_for_rename_sql.c_str(), icss);
 
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error updating collection object rename for collection %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error updating collection object rename for collection %s.  Error is %i", objectIdentifier.c_str(), status);
             cmlExecuteNoAnswerSql("rollback", icss);
             return;
         }
@@ -937,7 +938,7 @@ rodsLog(LOG_ERROR, "%s:%i - %s()", __FILE__, __LINE__, __FUNCTION__);
         status =  cmlExecuteNoAnswerSql("commit", icss);
 
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error committing update to collection rename for collection %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error committing update to collection rename for collection %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 #endif
@@ -945,52 +946,52 @@ rodsLog(LOG_ERROR, "%s:%i - %s()", __FILE__, __LINE__, __FUNCTION__);
         try {
 
 
-            //std::string old_lustre_path = lustre_root_path + old_irods_path.substr(register_path.length());
-            //std::string new_lustre_path = lustre_root_path + new_irods_path.substr(register_path.length());
+            //std::string old_beegfs_path = beegfs_root_path + old_irods_path.substr(register_path.length());
+            //std::string new_beegfs_path = beegfs_root_path + new_irods_path.substr(register_path.length());
         
-            std::string old_lustre_path;   
-            std::string new_lustre_path;   
+            std::string old_beegfs_path;   
+            std::string new_beegfs_path;   
 
-            if (irods_path_to_lustre_path(old_irods_path, register_map, old_lustre_path) < 0) {
-                rodsLog(LOG_ERROR, "%s - could not convert old irods path [%s] to old lustre path .  skipping.\n", old_irods_path.c_str(), old_lustre_path.c_str());
+            if (irods_path_to_beegfs_path(old_irods_path, register_map, old_beegfs_path) < 0) {
+                rodsLog(LOG_ERROR, "%s - could not convert old irods path [%s] to old beegfs path .  skipping.\n", old_irods_path.c_str(), old_beegfs_path.c_str());
                 return;
             }
 
-            if (irods_path_to_lustre_path(new_irods_path, register_map, new_lustre_path) < 0) {
-                rodsLog(LOG_ERROR, "%s - could not convert new irods path [%s] to new lustre path .  skipping.\n", new_irods_path.c_str(), new_lustre_path.c_str());
+            if (irods_path_to_beegfs_path(new_irods_path, register_map, new_beegfs_path) < 0) {
+                rodsLog(LOG_ERROR, "%s - could not convert new irods path [%s] to new beegfs path .  skipping.\n", new_irods_path.c_str(), new_beegfs_path.c_str());
                 return;
             }
 
-            std::string like_clause = old_lustre_path + "/%";
+            std::string like_clause = old_beegfs_path + "/%";
 
-            rodsLog(LOG_DEBUG, "old_lustre_path = %s", old_lustre_path.c_str());
-            rodsLog(LOG_DEBUG, "new_lustre_path = %s", new_lustre_path.c_str());
+            rodsLog(LOG_DEBUG, "old_beegfs_path = %s", old_beegfs_path.c_str());
+            rodsLog(LOG_DEBUG, "new_beegfs_path = %s", new_beegfs_path.c_str());
 
             // for now, rename all with sql update
 #if defined(POSTGRES_ICAT)
-            cllBindVars[0] = new_lustre_path.c_str();
-            cllBindVars[1] = old_lustre_path.c_str();
+            cllBindVars[0] = new_beegfs_path.c_str();
+            cllBindVars[1] = old_beegfs_path.c_str();
             cllBindVars[2] = like_clause.c_str();
             cllBindVarCount = 3;
             status = cmlExecuteNoAnswerSql(update_filepath_on_collection_rename_sql.c_str(), icss);
 #elif defined(COCKROACHDB_ICAT)
-            cllBindVars[0] = new_lustre_path.c_str();
-            std::string old_path_len_str = std::to_string(old_lustre_path.length());
+            cllBindVars[0] = new_beegfs_path.c_str();
+            std::string old_path_len_str = std::to_string(old_beegfs_path.length());
             cllBindVars[1] = old_path_len_str.c_str();
             cllBindVars[2] = like_clause.c_str();
             cllBindVarCount = 3;
             status = cmlExecuteNoAnswerSql(update_filepath_on_collection_rename_sql.c_str(), icss);
 #else
             // oracle and mysql
-            cllBindVars[0] = old_lustre_path.c_str();
-            cllBindVars[1] = new_lustre_path.c_str();
+            cllBindVars[0] = old_beegfs_path.c_str();
+            cllBindVars[1] = new_beegfs_path.c_str();
             cllBindVars[2] = like_clause.c_str();
             cllBindVarCount = 3;
             status = cmlExecuteNoAnswerSql(update_filepath_on_collection_rename_sql.c_str(), icss);
 #endif
 
             if ( status < 0 && status != CAT_SUCCESS_BUT_WITH_NO_INFO) {
-                rodsLog(LOG_ERROR, "Error updating data objects after collection move for collection %s.  Error is %i", fidstr.c_str(), status);
+                rodsLog(LOG_ERROR, "Error updating data objects after collection move for collection %s.  Error is %i", objectIdentifier.c_str(), status);
                 cmlExecuteNoAnswerSql("rollback", icss);
                 return;
             }
@@ -998,13 +999,13 @@ rodsLog(LOG_ERROR, "%s:%i - %s()", __FILE__, __LINE__, __FUNCTION__);
 #if !defined(COCKROACHDB_ICAT)
             status =  cmlExecuteNoAnswerSql("commit", icss);
             if (status != 0) {
-                rodsLog(LOG_ERROR, "Error committing data object update after collection move for collection %s.  Error is %i", fidstr.c_str(), status);
+                rodsLog(LOG_ERROR, "Error committing data object update after collection move for collection %s.  Error is %i", objectIdentifier.c_str(), status);
                 return;
             } 
 #endif
 
         } catch(const std::out_of_range& e) {
-            rodsLog(LOG_ERROR, "Error updating data objects after collection move for collection %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error updating data objects after collection move for collection %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 
@@ -1021,7 +1022,7 @@ rodsLog(LOG_ERROR, "%s:%i - %s()", __FILE__, __LINE__, __FUNCTION__);
 
         status = rsDataObjRename( _comm, &dataObjRenameInp );
         if ( status < 0 ) {
-            rodsLog(LOG_ERROR, "Error updating data object rename for data_object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error updating data object rename for data_object %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 
@@ -1032,33 +1033,33 @@ rodsLog(LOG_ERROR, "%s:%i - %s()", __FILE__, __LINE__, __FUNCTION__);
 }
 
 void handle_unlink(const std::vector<std::pair<std::string, std::string> >& register_map, 
-        const int64_t& resource_id, const std::string& resource_name, const std::string& fidstr, 
-        const std::string& lustre_path, const std::string& object_name, 
-        const ChangeDescriptor::ObjectTypeEnum& object_type, const std::string& parent_fidstr, const int64_t& file_size,
+        const int64_t& resource_id, const std::string& resource_name, const std::string& objectIdentifier, 
+        const std::string& beegfs_path, const std::string& object_name, 
+        const ChangeDescriptor::ObjectTypeEnum& object_type, const std::string& parent_objectIdentifier, const int64_t& file_size,
         rsComm_t* _comm, icatSessionStruct *icss, const rodsLong_t& user_id, bool direct_db_access_flag) {
 
     int status;
 
     if (direct_db_access_flag) { 
 
-        cllBindVars[0] = fidstr.c_str();
+        cllBindVars[0] = objectIdentifier.c_str();
         cllBindVarCount = 1;
         status = cmlExecuteNoAnswerSql(unlink_sql.c_str(), icss);
 
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error deleting data object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error deleting data object %s.  Error is %i", objectIdentifier.c_str(), status);
             cmlExecuteNoAnswerSql("rollback", icss);
             return;
         }
 
         // delete the metadata on the data object 
-        cllBindVars[0] = fidstr.c_str();
+        cllBindVars[0] = objectIdentifier.c_str();
         cllBindVarCount = 1;
         status = cmlExecuteNoAnswerSql(remove_object_meta_sql.c_str(), icss);
 
         if (status != 0) {
             // Couldn't delete metadata.  Just log and return 
-            rodsLog(LOG_ERROR, "Error deleting metadata from data object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error deleting metadata from data object %s.  Error is %i", objectIdentifier.c_str(), status);
         }
 
 
@@ -1066,7 +1067,7 @@ void handle_unlink(const std::vector<std::pair<std::string, std::string> >& regi
         status =  cmlExecuteNoAnswerSql("commit", icss);
 
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error committing delete for data object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error committing delete for data object %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 #endif
@@ -1075,12 +1076,12 @@ void handle_unlink(const std::vector<std::pair<std::string, std::string> >& regi
 
         std::string irods_path;
        
-        // look up object based on fidstr
-        status = find_irods_path_with_avu(_comm, fidstr_avu_key, fidstr, "", false, irods_path); 
+        // look up object based on objectIdentifier
+        status = find_irods_path_with_avu(_comm, objectIdentifier_avu_key, objectIdentifier, "", false, irods_path); 
 
         if (status != 0) {
             // Log as debug since this is a normal condition when the data object is not in register map.
-            rodsLog(LOG_DEBUG, "Error unregistering data object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_DEBUG, "Error unregistering data object %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 
@@ -1093,7 +1094,7 @@ void handle_unlink(const std::vector<std::pair<std::string, std::string> >& regi
         status = rsDataObjUnlink(_comm, &dataObjInp);
 
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error unregistering data object %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error unregistering data object %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 
@@ -1103,11 +1104,11 @@ void handle_unlink(const std::vector<std::pair<std::string, std::string> >& regi
 
 #if !defined(COCKROACHDB_ICAT)
 
-    void handle_batch_unlink(const std::vector<std::string>& fidstr_list, const int64_t& resource_id, 
+    void handle_batch_unlink(const std::vector<std::string>& objectIdentifier_list, const int64_t& resource_id, 
             const int64_t& maximum_records_per_sql_command, rsComm_t* _comm, icatSessionStruct *icss) {
     
         //size_t transactions_per_update = 1;
-        int64_t delete_count = fidstr_list.size();
+        int64_t delete_count = objectIdentifier_list.size();
         int status;
     
         // delete from R_DATA_MAIN
@@ -1128,10 +1129,10 @@ void handle_unlink(const std::vector<std::pair<std::string, std::string> >& regi
             std::vector<std::string> object_id_list;
     
             std::string query_objects_sql = "select R_OBJT_METAMAP.object_id from R_OBJT_METAMAP inner join R_META_MAIN on R_META_MAIN.meta_id = R_OBJT_METAMAP.meta_id "
-                            "where R_META_MAIN.meta_attr_name = 'lustre_identifier' and R_META_MAIN.meta_attr_value in (";
+                            "where R_META_MAIN.meta_attr_name = 'beegfs_identifier' and R_META_MAIN.meta_attr_value in (";
              
             for (int64_t i = 0; batch_begin + i < delete_count && i < maximum_records_per_sql_command; ++i) {
-                query_objects_sql += "'" + fidstr_list[batch_begin + i] + "'";
+                query_objects_sql += "'" + objectIdentifier_list[batch_begin + i] + "'";
                 if (batch_begin + i == delete_count - 1 || maximum_records_per_sql_command - 1 == i) {
                 query_objects_sql += ")";
                 } else {
@@ -1284,10 +1285,10 @@ void handle_unlink(const std::vector<std::pair<std::string, std::string> >& regi
 
 #if defined(COCKROACHDB_ICAT)
 
-    void handle_batch_unlink(const std::vector<std::string>& fidstr_list, const int64_t& maximum_records_per_sql_command, rsComm_t* _comm, icatSessionStruct *icss) {
+    void handle_batch_unlink(const std::vector<std::string>& objectIdentifier_list, const int64_t& maximum_records_per_sql_command, rsComm_t* _comm, icatSessionStruct *icss) {
 
         //size_t transactions_per_update = 1;
-        int64_t delete_count = fidstr_list.size();
+        int64_t delete_count = objectIdentifier_list.size();
         int status;
 
         // delete from R_DATA_MAIN
@@ -1308,10 +1309,10 @@ void handle_unlink(const std::vector<std::pair<std::string, std::string> >& regi
             std::vector<std::string> object_id_list;
 
             std::string query_objects_sql = "select R_OBJT_METAMAP.object_id from R_OBJT_METAMAP inner join R_META_MAIN on R_META_MAIN.meta_id = R_OBJT_METAMAP.meta_id "
-                                            "where R_META_MAIN.meta_attr_name = 'lustre_identifier' and R_META_MAIN.meta_attr_value in (";
+                                            "where R_META_MAIN.meta_attr_name = 'beegfs_identifier' and R_META_MAIN.meta_attr_value in (";
          
             for (int64_t i = 0; batch_begin + i < delete_count && i < maximum_records_per_sql_command; ++i) {
-                query_objects_sql += "'" + fidstr_list[batch_begin + i] + "'";
+                query_objects_sql += "'" + objectIdentifier_list[batch_begin + i] + "'";
                 if (batch_begin + i == delete_count - 1 || maximum_records_per_sql_command - 1 == i) {
                     query_objects_sql += ")";
                 } else {
@@ -1413,9 +1414,9 @@ void handle_unlink(const std::vector<std::pair<std::string, std::string> >& regi
 #endif // defined(COCKROACHDB_ICAT)
 
 void handle_rmdir(const std::vector<std::pair<std::string, std::string> >& register_map, 
-        const int64_t& resource_id, const std::string& resource_name, const std::string& fidstr, 
-        const std::string& lustre_path, const std::string& object_name, 
-        const ChangeDescriptor::ObjectTypeEnum& object_type, const std::string& parent_fidstr, const int64_t& file_size,
+        const int64_t& resource_id, const std::string& resource_name, const std::string& objectIdentifier, 
+        const std::string& beegfs_path, const std::string& object_name, 
+        const ChangeDescriptor::ObjectTypeEnum& object_type, const std::string& parent_objectIdentifier, const int64_t& file_size,
         rsComm_t* _comm, icatSessionStruct *icss, const rodsLong_t& user_id, bool direct_db_access_flag) {
 
     int status;
@@ -1423,32 +1424,32 @@ void handle_rmdir(const std::vector<std::pair<std::string, std::string> >& regis
     if (direct_db_access_flag) { 
 
 
-        // don't delete the collection , simply remove the lustre identifier metadata
-        /*cllBindVars[0] = fidstr.c_str();
+        // don't delete the collection , simply remove the beegfs identifier metadata
+        /*cllBindVars[0] = objectIdentifier.c_str();
         cllBindVarCount = 1;
         status = cmlExecuteNoAnswerSql(rmdir_sql.c_str(), icss);
 
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error deleting directory %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error deleting directory %s.  Error is %i", objectIdentifier.c_str(), status);
             cmlExecuteNoAnswerSql("rollback", icss);
             return;
         }*/
 
         // delete the metadata on the collection 
-        cllBindVars[0] = fidstr.c_str();
+        cllBindVars[0] = objectIdentifier.c_str();
         cllBindVarCount = 1;
         status = cmlExecuteNoAnswerSql(remove_object_meta_sql.c_str(), icss);
 
         if (status != 0) {
             // Couldn't delete metadata.  Just log and return.
-            rodsLog(LOG_ERROR, "Error deleting metadata from collection %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error deleting metadata from collection %s.  Error is %i", objectIdentifier.c_str(), status);
         }
 
 #if !defined(COCKROACHDB_ICAT)
         status =  cmlExecuteNoAnswerSql("commit", icss);
 
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error committing delete for collection %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error committing delete for collection %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 #endif
@@ -1457,12 +1458,12 @@ void handle_rmdir(const std::vector<std::pair<std::string, std::string> >& regis
 
         std::string irods_path;
        
-        // look up object based on fidstr
-        status = find_irods_path_with_avu(_comm, fidstr_avu_key, fidstr, "", true, irods_path); 
+        // look up object based on objectIdentifier
+        status = find_irods_path_with_avu(_comm, objectIdentifier_avu_key, objectIdentifier, "", true, irods_path); 
 
         if (status != 0) {
             // Log as debug since this is a normal condition when the collection is not in register map.
-            rodsLog(LOG_DEBUG, "Error deleting directory %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_DEBUG, "Error deleting directory %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 
@@ -1475,7 +1476,7 @@ void handle_rmdir(const std::vector<std::pair<std::string, std::string> >& regis
         status = rsRmColl(_comm, &rmCollInp, nullptr);
 
         if (status != 0) {
-            rodsLog(LOG_ERROR, "Error deleting directory %s.  Error is %i", fidstr.c_str(), status);
+            rodsLog(LOG_ERROR, "Error deleting directory %s.  Error is %i", objectIdentifier.c_str(), status);
             return;
         }
 
@@ -1483,40 +1484,42 @@ void handle_rmdir(const std::vector<std::pair<std::string, std::string> >& regis
     }
 }
 
-void handle_write_fid(const std::vector<std::pair<std::string, std::string> >& register_map, const std::string& lustre_path, 
-                const std::string& fidstr, rsComm_t* _comm, icatSessionStruct *icss, bool direct_db_access_flag) {
+void handle_write_fid(const std::vector<std::pair<std::string, std::string> >& register_map, const std::string& beegfs_path, 
+                const std::string& objectIdentifier, rsComm_t* _comm, icatSessionStruct *icss, bool direct_db_access_flag) {
 
     std::string irods_path;
-    if (lustre_path_to_irods_path(lustre_path, register_map, irods_path) < 0) {
-        rodsLog(LOG_NOTICE, "Skipping handle_write_fid on lustre_path [%s] which is not in register_map.",
-               lustre_path.c_str());
+    if (beegfs_path_to_irods_path(beegfs_path, register_map, irods_path) < 0) {
+        rodsLog(LOG_NOTICE, "Skipping handle_write_fid on beegfs_path [%s] which is not in register_map.",
+               beegfs_path.c_str());
         return;
     }
+
+    rodsLog(LOG_NOTICE, "Writing FID (%s) to %s", objectIdentifier.c_str(), irods_path.c_str());
 
     // query metadata to see if it already exists
     if (direct_db_access_flag) {
         rodsLong_t coll_id;
         std::vector<std::string> bindVars;
-        bindVars.push_back(fidstr);
-        if (cmlGetIntegerValueFromSql(get_collection_id_from_fidstr_sql.c_str(), &coll_id, bindVars, icss ) != CAT_NO_ROWS_FOUND) {
+        bindVars.push_back(objectIdentifier);
+        if (cmlGetIntegerValueFromSql(get_collection_id_from_objectIdentifier_sql.c_str(), &coll_id, bindVars, icss ) != CAT_NO_ROWS_FOUND) {
             return;
         }
     } else {
-        int status = find_irods_path_with_avu(_comm, fidstr_avu_key, fidstr, "", true, irods_path); 
+        int status = find_irods_path_with_avu(_comm, objectIdentifier_avu_key, objectIdentifier, "", true, irods_path); 
         if (status == 0) {
             // found a row which means the avu is already there, just return     
             return;
         } 
     }
 
-    // add lustre_identifier metadata
+    // add beegfs_identifier metadata
     modAVUMetadataInp_t modAVUMetadataInp;
     memset(&modAVUMetadataInp, 0, sizeof(modAVUMetadataInp_t)); 
     modAVUMetadataInp.arg0 = "add";
     modAVUMetadataInp.arg1 = "-C";
     modAVUMetadataInp.arg2 = const_cast<char*>(irods_path.c_str());
-    modAVUMetadataInp.arg3 = const_cast<char*>(fidstr_avu_key.c_str());
-    modAVUMetadataInp.arg4 = const_cast<char*>(fidstr.c_str());
+    modAVUMetadataInp.arg3 = const_cast<char*>(objectIdentifier_avu_key.c_str());
+    modAVUMetadataInp.arg4 = const_cast<char*>(objectIdentifier.c_str());
 
     // ignore error code because the fid metadata likely already exists on the root collection
     rsModAVUMetadata(_comm, &modAVUMetadataInp);

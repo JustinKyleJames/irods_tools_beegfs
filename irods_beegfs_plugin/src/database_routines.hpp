@@ -1,5 +1,5 @@
-#ifndef _LUSTRE_IRODS_API_DB_ROUTINES
-#define _LUSTRE_IRODS_API_DB_ROUTINES
+#ifndef BEEGFS_IRODS_API_DB_ROUTINES
+#define BEEGFS_IRODS_API_DB_ROUTINES
 
 #include "icatStructs.hpp"
 

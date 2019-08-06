@@ -1,5 +1,5 @@
-#ifndef IRODS_LUSTRE_CHANGELOG_CONFIG_H
-#define IRODS_LUSTRE_CHANGELOG_CONFIG_H
+#ifndef IRODS_BEEGFS_CHANGELOG_CONFIG_H
+#define IRODS_BEEGFS_CHANGELOG_CONFIG_H
 
 #include <map>
 #include <string>
@@ -11,9 +11,9 @@ typedef struct irods_connection_cfg {
     int irods_port;
 } irods_connection_cfg_t;
 
-typedef struct lustre_irods_connector_cfg {
+typedef struct beegfs_irods_connector_cfg {
     std::string beegfs_socket;
-    std::string lustre_root_path;
+    std::string beegfs_root_path;
     std::string irods_resource_name;
     std::string irods_api_update_type;    // valid values are "direct" and "policy"
     int64_t irods_resource_id;
@@ -26,7 +26,7 @@ typedef struct lustre_irods_connector_cfg {
     unsigned int irods_updater_thread_count;
     unsigned int maximum_records_per_sql_command;
     unsigned int maximum_records_per_update_to_irods;
-    unsigned int maximum_records_to_receive_from_lustre_changelog;
+    unsigned int maximum_records_to_receive_from_beegfs_changelog;
     unsigned int message_receive_timeout_msec;
 
     // optional parameters for using storage tiering time violation
@@ -36,12 +36,12 @@ typedef struct lustre_irods_connector_cfg {
 
     std::map<int, irods_connection_cfg_t> irods_connection_list;
 
-    // map the lustre path to irods path
+    // map the beegfs path to irods path
     std::vector<std::pair<std::string, std::string> > register_map;
 
-} lustre_irods_connector_cfg_t;
+} beegfs_irods_connector_cfg_t;
 
 
-int read_config_file(const std::string& filename, lustre_irods_connector_cfg_t *config_struct);
+int read_config_file(const std::string& filename, beegfs_irods_connector_cfg_t *config_struct);
 
 #endif

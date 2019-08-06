@@ -55,7 +55,7 @@ int main( int, char** ) {
         }
     }
 
-    irodsLustreApiInp_t inp;
+    irodsBeegfsApiInp_t inp;
     memset( &inp, 0, sizeof( inp ) );
     /*inp.change_log_json = "{"
             "\"employee\": {"
@@ -71,7 +71,7 @@ int main( int, char** ) {
         return 0;
     }
     else {
-        irodsLustreApiOut_t* out = static_cast<irodsLustreApiOut_t*>( tmp_out );
+        irodsBeegfsApiOut_t* out = static_cast<irodsBeegfsApiOut_t*>( tmp_out );
         printf("status is %i\n", out->status);
     }
 

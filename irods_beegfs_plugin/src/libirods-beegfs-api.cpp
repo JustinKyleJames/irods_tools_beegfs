@@ -52,23 +52,23 @@
 #include "irods_beegfs_operations.hpp"
 
 
-int call_irodsLustreApiInp_irodsLustreApiOut( irods::api_entry* _api, 
+int call_irodsBeegfsApiInp_irodsBeegfsApiOut( irods::api_entry* _api, 
                             rsComm_t*  _comm,
-                            irodsLustreApiInp_t* _inp, 
-                            irodsLustreApiOut_t** _out ) {
+                            irodsBeegfsApiInp_t* _inp, 
+                            irodsBeegfsApiOut_t** _out ) {
     return _api->call_handler<
-               irodsLustreApiInp_t*,
-               irodsLustreApiOut_t** >(
+               irodsBeegfsApiInp_t*,
+               irodsBeegfsApiOut_t** >(
                    _comm,
                    _inp,
                    _out );
 }
 
 #ifdef RODS_SERVER
-static irods::error serialize_irodsLustreApiInp_ptr( boost::any _p, 
+static irods::error serialize_irodsBeegfsApiInp_ptr( boost::any _p, 
                                             irods::re_serialization::serialized_parameter_t& _out) {
     try {
-        irodsLustreApiInp_t* tmp = boost::any_cast<irodsLustreApiInp_t*>(_p);
+        irodsBeegfsApiInp_t* tmp = boost::any_cast<irodsBeegfsApiInp_t*>(_p);
         if(tmp) {
             _out["buf"] = boost::lexical_cast<std::string>(tmp->buf);
         }
@@ -79,18 +79,18 @@ static irods::error serialize_irodsLustreApiInp_ptr( boost::any _p,
     catch ( std::exception& ) {
         return ERROR(
                 INVALID_ANY_CAST,
-                "failed to cast irodsLustreApiInp_t ptr" );
+                "failed to cast irodsBeegfsApiInp_t ptr" );
     }
 
     return SUCCESS();
-} // serialize_irodsLustreApiInp_ptr
+} // serialize_irodsBeegfsApiInp_ptr
 
-static irods::error serialize_irodsLustreApiOut_ptr_ptr( boost::any _p,
+static irods::error serialize_irodsBeegfsApiOut_ptr_ptr( boost::any _p,
                                                 irods::re_serialization::serialized_parameter_t& _out) {
     try {
-        irodsLustreApiOut_t** tmp = boost::any_cast<irodsLustreApiOut_t**>(_p);
+        irodsBeegfsApiOut_t** tmp = boost::any_cast<irodsBeegfsApiOut_t**>(_p);
         if(tmp && *tmp ) {
-            irodsLustreApiOut_t*  l = *tmp;
+            irodsBeegfsApiOut_t*  l = *tmp;
             _out["status"] = boost::lexical_cast<std::string>(l->status);
         }
         else {
@@ -100,26 +100,26 @@ static irods::error serialize_irodsLustreApiOut_ptr_ptr( boost::any _p,
     catch ( std::exception& ) {
         return ERROR(
                 INVALID_ANY_CAST,
-                "failed to cast irodsLustreApiOut_t ptr" );
+                "failed to cast irodsBeegfsApiOut_t ptr" );
     }
 
     return SUCCESS();
-} // serialize_irodsLustreApiOut_ptr_ptr
+} // serialize_irodsBeegfsApiOut_ptr_ptr
 #endif
 
 
 #ifdef RODS_SERVER
-    #define CALL_IRODS_LUSTRE_API_INP_OUT call_irodsLustreApiInp_irodsLustreApiOut 
+    #define CALL_IRODS_BEEGFS_API_INP_OUT call_irodsBeegfsApiInp_irodsBeegfsApiOut 
 #else
-    #define CALL_IRODS_LUSTRE_API_INP_OUT NULL 
+    #define CALL_IRODS_BEEGFS_API_INP_OUT NULL 
 #endif
 
 // =-=-=-=-=-=-=-
 // api function to be referenced by the entry
 
-int rs_handle_lustre_records( rsComm_t* _comm, irodsLustreApiInp_t* _inp, irodsLustreApiOut_t** _out ) {
+int rs_handle_beegfs_records( rsComm_t* _comm, irodsBeegfsApiInp_t* _inp, irodsBeegfsApiOut_t** _out ) {
 
-    rodsLog( LOG_NOTICE, "Dynamic API - Lustre API" );
+    rodsLog( LOG_NOTICE, "Dynamic API - Beegfs API" );
 
     // read the serialized input
     const kj::ArrayPtr<const capnp::word> array_ptr{ reinterpret_cast<const capnp::word*>(&(*(_inp->buf))), 
@@ -130,12 +130,12 @@ int rs_handle_lustre_records( rsComm_t* _comm, irodsLustreApiInp_t* _inp, irodsL
     std::string irods_api_update_type(changeMap.getIrodsApiUpdateType().cStr()); 
     bool direct_db_modification_requested = (irods_api_update_type == "direct");
 
-    // read and populate the register_map which holds a mapping of lustre paths to irods paths
+    // read and populate the register_map which holds a mapping of beegfs paths to irods paths
     std::vector<std::pair<std::string, std::string> > register_map;
     for (RegisterMapEntry::Reader entry : changeMap.getRegisterMap()) {
-        std::string lustre_path(entry.getLustrePath().cStr());
+        std::string beegfs_path(entry.getFilePath().cStr());
         std::string irods_register_path(entry.getIrodsRegisterPath().cStr());
-        register_map.push_back(std::make_pair(lustre_path, irods_register_path));
+        register_map.push_back(std::make_pair(beegfs_path, irods_register_path));
     }
 
 
@@ -171,7 +171,7 @@ int rs_handle_lustre_records( rsComm_t* _comm, irodsLustreApiInp_t* _inp, irodsL
         }
 
         if (irods::CFG_SERVICE_ROLE_PROVIDER != svc_role) {
-            rodsLog(LOG_ERROR, "Error:  Attempting bulk Lustre operations on a catalog consumer.  Must connect to catalog provider.");
+            rodsLog(LOG_ERROR, "Error:  Attempting bulk Beegfs operations on a catalog consumer.  Must connect to catalog provider.");
             return CAT_NOT_OPEN;
         }
 
@@ -188,7 +188,7 @@ int rs_handle_lustre_records( rsComm_t* _comm, irodsLustreApiInp_t* _inp, irodsL
 //    }
 
     // setup the output struct
-    ( *_out ) = ( irodsLustreApiOut_t* )malloc( sizeof( irodsLustreApiOut_t ) );
+    ( *_out ) = ( irodsBeegfsApiOut_t* )malloc( sizeof( irodsBeegfsApiOut_t ) );
     ( *_out )->status = 0;
 
     rodsLong_t user_id;
@@ -202,7 +202,7 @@ int rs_handle_lustre_records( rsComm_t* _comm, irodsLustreApiInp_t* _inp, irodsL
         }
     }
 
-    //std::string lustre_root_path(changeMap.getLustreRootPath().cStr()); 
+    //std::string beegfs_root_path(changeMap.getBeegfsRootPath().cStr()); 
     //std::string register_path(changeMap.getRegisterPath().cStr()); 
     int64_t resource_id = changeMap.getResourceId();
     std::string resource_name(changeMap.getResourceName().cStr());
@@ -211,69 +211,69 @@ int rs_handle_lustre_records( rsComm_t* _comm, irodsLustreApiInp_t* _inp, irodsL
     std::string metadata_key_for_storage_tiering_time_violation = changeMap.getMetadataKeyForStorageTieringTimeViolation();
 
     // for batched file inserts 
-    std::vector<std::string> fidstr_list_for_create;
-    std::vector<std::string> lustre_path_list;
+    std::vector<std::string> objectIdentifer_list_for_create;
+    std::vector<std::string> beegfs_path_list;
     std::vector<std::string> object_name_list;
-    std::vector<std::string> parent_fidstr_list;
+    std::vector<std::string> parent_objectIdentifer_list;
     std::vector<int64_t> file_size_list;
 
     // for batched file deletes
-    std::vector<std::string> fidstr_list_for_unlink;
+    std::vector<std::string> objectIdentifer_list_for_unlink;
 
     for (ChangeDescriptor::Reader entry : changeMap.getEntries()) {
 
         const ChangeDescriptor::EventTypeEnum event_type = entry.getEventType();
-        std::string fidstr(entry.getFidstr().cStr());
-        std::string lustre_path(entry.getLustrePath().cStr());
+        std::string objectIdentifer(entry.getObjectIdentifier().cStr());
+        std::string beegfs_path(entry.getFilePath().cStr());
         std::string object_name(entry.getObjectName().cStr());
         const ChangeDescriptor::ObjectTypeEnum object_type = entry.getObjectType();
-        std::string parent_fidstr(entry.getParentFidstr().cStr());
+        std::string parent_objectIdentifer(entry.getParentObjectIdentifier().cStr());
         int64_t file_size = entry.getFileSize();
 
         // Handle changes in iRODS
 
         if (event_type == ChangeDescriptor::EventTypeEnum::CREATE) {
             if (direct_db_modification_requested) {
-                fidstr_list_for_create.push_back(fidstr);
-                lustre_path_list.push_back(lustre_path);
+                objectIdentifer_list_for_create.push_back(objectIdentifer);
+                beegfs_path_list.push_back(beegfs_path);
                 object_name_list.push_back(object_name);
-                parent_fidstr_list.push_back(parent_fidstr);
+                parent_objectIdentifer_list.push_back(parent_objectIdentifer);
                 file_size_list.push_back(file_size);
             } else {
                 handle_create(register_map, resource_id, resource_name,
-                        fidstr, lustre_path, object_name, object_type, parent_fidstr, file_size,
+                        objectIdentifer, beegfs_path, object_name, object_type, parent_objectIdentifer, file_size,
                         _comm, icss, user_id, direct_db_modification_requested);
             }
         } else if (event_type == ChangeDescriptor::EventTypeEnum::MKDIR) {
             handle_mkdir(register_map, resource_id, resource_name,
-                    fidstr, lustre_path, object_name, object_type, parent_fidstr, file_size,
+                    objectIdentifer, beegfs_path, object_name, object_type, parent_objectIdentifer, file_size,
                     _comm, icss, user_id, direct_db_modification_requested);
         } else if (event_type == ChangeDescriptor::EventTypeEnum::OTHER) {
             handle_other(register_map, resource_id, resource_name,
-                    fidstr, lustre_path, object_name, object_type, parent_fidstr, file_size,
+                    objectIdentifer, beegfs_path, object_name, object_type, parent_objectIdentifer, file_size,
                     _comm, icss, user_id, direct_db_modification_requested);
         } else if (event_type == ChangeDescriptor::EventTypeEnum::RENAME and object_type == ChangeDescriptor::ObjectTypeEnum::FILE) {
             handle_rename_file(register_map, resource_id, resource_name,
-                    fidstr, lustre_path, object_name, object_type, parent_fidstr, file_size,
+                    objectIdentifer, beegfs_path, object_name, object_type, parent_objectIdentifer, file_size,
                     _comm, icss, user_id, direct_db_modification_requested);
         } else if (event_type == ChangeDescriptor::EventTypeEnum::RENAME and object_type == ChangeDescriptor::ObjectTypeEnum::DIR) {
             handle_rename_dir(register_map, resource_id, resource_name,
-                    fidstr, lustre_path, object_name, object_type, parent_fidstr, file_size,
+                    objectIdentifer, beegfs_path, object_name, object_type, parent_objectIdentifer, file_size,
                     _comm, icss, user_id, direct_db_modification_requested);
         } else if (event_type == ChangeDescriptor::EventTypeEnum::UNLINK) {
             if (direct_db_modification_requested) {
-                fidstr_list_for_unlink.push_back(fidstr);
+                objectIdentifer_list_for_unlink.push_back(objectIdentifer);
             } else {
                 handle_unlink(register_map, resource_id, resource_name,
-                        fidstr, lustre_path, object_name, object_type, parent_fidstr, file_size,
+                        objectIdentifer, beegfs_path, object_name, object_type, parent_objectIdentifer, file_size,
                         _comm, icss, user_id, direct_db_modification_requested);
             }
         } else if (event_type == ChangeDescriptor::EventTypeEnum::RMDIR) {
             handle_rmdir(register_map, resource_id, resource_name,
-                    fidstr, lustre_path, object_name, object_type, parent_fidstr, file_size,
+                    objectIdentifer, beegfs_path, object_name, object_type, parent_objectIdentifer, file_size,
                     _comm, icss, user_id, direct_db_modification_requested);
         } else if (event_type == ChangeDescriptor::EventTypeEnum::WRITE_FID) {
-            handle_write_fid(register_map, lustre_path, fidstr, _comm, icss, direct_db_modification_requested);
+            handle_write_fid(register_map, beegfs_path, objectIdentifer, _comm, icss, direct_db_modification_requested);
         }
 
 
@@ -281,19 +281,19 @@ int rs_handle_lustre_records( rsComm_t* _comm, irodsLustreApiInp_t* _inp, irodsL
 
     if (direct_db_modification_requested) {
 
-        if (fidstr_list_for_unlink.size() > 0) {
-            handle_batch_unlink(fidstr_list_for_unlink, resource_id, maximum_records_per_sql_command, _comm, icss);
+        if (objectIdentifer_list_for_unlink.size() > 0) {
+            handle_batch_unlink(objectIdentifer_list_for_unlink, resource_id, maximum_records_per_sql_command, _comm, icss);
         }
  
-        if (fidstr_list_for_create.size() > 0) {
+        if (objectIdentifer_list_for_create.size() > 0) {
             handle_batch_create(register_map, resource_id, resource_name,
-                    fidstr_list_for_create, lustre_path_list, object_name_list, parent_fidstr_list, file_size_list,
+                    objectIdentifer_list_for_create, beegfs_path_list, object_name_list, parent_objectIdentifer_list, file_size_list,
                     maximum_records_per_sql_command, _comm, icss, user_id, set_metadata_for_storage_tiering_time_violation,
                     metadata_key_for_storage_tiering_time_violation);
         }
     }
 
-    rodsLog(LOG_NOTICE, "Dynamic Lustre API - DONE" );
+    rodsLog(LOG_NOTICE, "Dynamic Beegfs API - DONE" );
 
     return 0;
 }
@@ -310,14 +310,14 @@ extern "C" {
                                 RODS_API_VERSION, // api version
                                 NO_USER_AUTH,     // client auth
                                 NO_USER_AUTH,     // proxy auth
-                                "IrodsLustreApiInp_PI", 0, // in PI / bs flag
-                                "IrodsLustreApiOut", 0, // out PI / bs flag
+                                "IrodsBeegfsApiInp_PI", 0, // in PI / bs flag
+                                "IrodsBeegfsApiOut", 0, // out PI / bs flag
                                 std::function<
-                                    int( rsComm_t*,irodsLustreApiInp_t*,irodsLustreApiOut_t**)>(
-                                        rs_handle_lustre_records), // operation
-								"rs_handle_lustre_records",    // operation name
+                                    int( rsComm_t*,irodsBeegfsApiInp_t*,irodsBeegfsApiOut_t**)>(
+                                        rs_handle_beegfs_records), // operation
+								"rs_handle_beegfs_records",    // operation name
                                 0,  // null clear fcn
-                                (funcPtr)CALL_IRODS_LUSTRE_API_INP_OUT
+                                (funcPtr)CALL_IRODS_BEEGFS_API_INP_OUT
                               };
         // =-=-=-=-=-=-=-
         // create an api object
@@ -325,21 +325,21 @@ extern "C" {
 
 #ifdef RODS_SERVER
         irods::re_serialization::add_operation(
-                typeid(irodsLustreApiInp_t*),
-                serialize_irodsLustreApiInp_ptr );
+                typeid(irodsBeegfsApiInp_t*),
+                serialize_irodsBeegfsApiInp_ptr );
 
         irods::re_serialization::add_operation(
-                typeid(irodsLustreApiOut_t**),
-                serialize_irodsLustreApiOut_ptr_ptr );
+                typeid(irodsBeegfsApiOut_t**),
+                serialize_irodsBeegfsApiOut_ptr_ptr );
 #endif // RODS_SERVER
 
         // =-=-=-=-=-=-=-
         // assign the pack struct key and value
-        api->in_pack_key   = "IrodsLustreApiInp_PI";
-        api->in_pack_value = IrodsLustreApiInp_PI;
+        api->in_pack_key   = "IrodsBeegfsApiInp_PI";
+        api->in_pack_value = IrodsBeegfsApiInp_PI;
 
-        api->out_pack_key   = "IrodsLustreApiOut_PI";
-        api->out_pack_value = IrodsLustreApiOut_PI;
+        api->out_pack_key   = "IrodsBeegfsApiOut_PI";
+        api->out_pack_value = IrodsBeegfsApiOut_PI;
 
         return api;
 

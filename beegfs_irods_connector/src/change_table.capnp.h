@@ -107,17 +107,17 @@ public:
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasFidstr() const;
-  inline  ::capnp::Text::Reader getFidstr() const;
+  inline bool hasObjectIdentifier() const;
+  inline  ::capnp::Text::Reader getObjectIdentifier() const;
 
-  inline bool hasParentFidstr() const;
-  inline  ::capnp::Text::Reader getParentFidstr() const;
+  inline bool hasParentObjectIdentifier() const;
+  inline  ::capnp::Text::Reader getParentObjectIdentifier() const;
 
   inline bool hasObjectName() const;
   inline  ::capnp::Text::Reader getObjectName() const;
 
-  inline bool hasLustrePath() const;
-  inline  ::capnp::Text::Reader getLustrePath() const;
+  inline bool hasFilePath() const;
+  inline  ::capnp::Text::Reader getFilePath() const;
 
   inline  ::ChangeDescriptor::EventTypeEnum getEventType() const;
 
@@ -159,19 +159,19 @@ public:
   inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasFidstr();
-  inline  ::capnp::Text::Builder getFidstr();
-  inline void setFidstr( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initFidstr(unsigned int size);
-  inline void adoptFidstr(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownFidstr();
+  inline bool hasObjectIdentifier();
+  inline  ::capnp::Text::Builder getObjectIdentifier();
+  inline void setObjectIdentifier( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initObjectIdentifier(unsigned int size);
+  inline void adoptObjectIdentifier(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownObjectIdentifier();
 
-  inline bool hasParentFidstr();
-  inline  ::capnp::Text::Builder getParentFidstr();
-  inline void setParentFidstr( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initParentFidstr(unsigned int size);
-  inline void adoptParentFidstr(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownParentFidstr();
+  inline bool hasParentObjectIdentifier();
+  inline  ::capnp::Text::Builder getParentObjectIdentifier();
+  inline void setParentObjectIdentifier( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initParentObjectIdentifier(unsigned int size);
+  inline void adoptParentObjectIdentifier(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownParentObjectIdentifier();
 
   inline bool hasObjectName();
   inline  ::capnp::Text::Builder getObjectName();
@@ -180,12 +180,12 @@ public:
   inline void adoptObjectName(::capnp::Orphan< ::capnp::Text>&& value);
   inline ::capnp::Orphan< ::capnp::Text> disownObjectName();
 
-  inline bool hasLustrePath();
-  inline  ::capnp::Text::Builder getLustrePath();
-  inline void setLustrePath( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initLustrePath(unsigned int size);
-  inline void adoptLustrePath(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownLustrePath();
+  inline bool hasFilePath();
+  inline  ::capnp::Text::Builder getFilePath();
+  inline void setFilePath( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initFilePath(unsigned int size);
+  inline void adoptFilePath(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownFilePath();
 
   inline  ::ChangeDescriptor::EventTypeEnum getEventType();
   inline void setEventType( ::ChangeDescriptor::EventTypeEnum value);
@@ -248,8 +248,8 @@ public:
   }
 #endif  // !CAPNP_LITE
 
-  inline bool hasLustrePath() const;
-  inline  ::capnp::Text::Reader getLustrePath() const;
+  inline bool hasFilePath() const;
+  inline  ::capnp::Text::Reader getFilePath() const;
 
   inline bool hasIrodsRegisterPath() const;
   inline  ::capnp::Text::Reader getIrodsRegisterPath() const;
@@ -282,12 +282,12 @@ public:
   inline ::kj::StringTree toString() const { return asReader().toString(); }
 #endif  // !CAPNP_LITE
 
-  inline bool hasLustrePath();
-  inline  ::capnp::Text::Builder getLustrePath();
-  inline void setLustrePath( ::capnp::Text::Reader value);
-  inline  ::capnp::Text::Builder initLustrePath(unsigned int size);
-  inline void adoptLustrePath(::capnp::Orphan< ::capnp::Text>&& value);
-  inline ::capnp::Orphan< ::capnp::Text> disownLustrePath();
+  inline bool hasFilePath();
+  inline  ::capnp::Text::Builder getFilePath();
+  inline void setFilePath( ::capnp::Text::Reader value);
+  inline  ::capnp::Text::Builder initFilePath(unsigned int size);
+  inline void adoptFilePath(::capnp::Orphan< ::capnp::Text>&& value);
+  inline ::capnp::Orphan< ::capnp::Text> disownFilePath();
 
   inline bool hasIrodsRegisterPath();
   inline  ::capnp::Text::Builder getIrodsRegisterPath();
@@ -470,70 +470,70 @@ private:
 
 // =======================================================================================
 
-inline bool ChangeDescriptor::Reader::hasFidstr() const {
+inline bool ChangeDescriptor::Reader::hasObjectIdentifier() const {
   return !_reader.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline bool ChangeDescriptor::Builder::hasFidstr() {
+inline bool ChangeDescriptor::Builder::hasObjectIdentifier() {
   return !_builder.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline  ::capnp::Text::Reader ChangeDescriptor::Reader::getFidstr() const {
+inline  ::capnp::Text::Reader ChangeDescriptor::Reader::getObjectIdentifier() const {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline  ::capnp::Text::Builder ChangeDescriptor::Builder::getFidstr() {
+inline  ::capnp::Text::Builder ChangeDescriptor::Builder::getObjectIdentifier() {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void ChangeDescriptor::Builder::setFidstr( ::capnp::Text::Reader value) {
+inline void ChangeDescriptor::Builder::setObjectIdentifier( ::capnp::Text::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline  ::capnp::Text::Builder ChangeDescriptor::Builder::initFidstr(unsigned int size) {
+inline  ::capnp::Text::Builder ChangeDescriptor::Builder::initObjectIdentifier(unsigned int size) {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
-inline void ChangeDescriptor::Builder::adoptFidstr(
+inline void ChangeDescriptor::Builder::adoptObjectIdentifier(
     ::capnp::Orphan< ::capnp::Text>&& value) {
   ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan< ::capnp::Text> ChangeDescriptor::Builder::disownFidstr() {
+inline ::capnp::Orphan< ::capnp::Text> ChangeDescriptor::Builder::disownObjectIdentifier() {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
 
-inline bool ChangeDescriptor::Reader::hasParentFidstr() const {
+inline bool ChangeDescriptor::Reader::hasParentObjectIdentifier() const {
   return !_reader.getPointerField(
       ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline bool ChangeDescriptor::Builder::hasParentFidstr() {
+inline bool ChangeDescriptor::Builder::hasParentObjectIdentifier() {
   return !_builder.getPointerField(
       ::capnp::bounded<1>() * ::capnp::POINTERS).isNull();
 }
-inline  ::capnp::Text::Reader ChangeDescriptor::Reader::getParentFidstr() const {
+inline  ::capnp::Text::Reader ChangeDescriptor::Reader::getParentObjectIdentifier() const {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
       ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline  ::capnp::Text::Builder ChangeDescriptor::Builder::getParentFidstr() {
+inline  ::capnp::Text::Builder ChangeDescriptor::Builder::getParentObjectIdentifier() {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
       ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
-inline void ChangeDescriptor::Builder::setParentFidstr( ::capnp::Text::Reader value) {
+inline void ChangeDescriptor::Builder::setParentObjectIdentifier( ::capnp::Text::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
       ::capnp::bounded<1>() * ::capnp::POINTERS), value);
 }
-inline  ::capnp::Text::Builder ChangeDescriptor::Builder::initParentFidstr(unsigned int size) {
+inline  ::capnp::Text::Builder ChangeDescriptor::Builder::initParentObjectIdentifier(unsigned int size) {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
       ::capnp::bounded<1>() * ::capnp::POINTERS), size);
 }
-inline void ChangeDescriptor::Builder::adoptParentFidstr(
+inline void ChangeDescriptor::Builder::adoptParentObjectIdentifier(
     ::capnp::Orphan< ::capnp::Text>&& value) {
   ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
       ::capnp::bounded<1>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan< ::capnp::Text> ChangeDescriptor::Builder::disownParentFidstr() {
+inline ::capnp::Orphan< ::capnp::Text> ChangeDescriptor::Builder::disownParentObjectIdentifier() {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
       ::capnp::bounded<1>() * ::capnp::POINTERS));
 }
@@ -572,36 +572,36 @@ inline ::capnp::Orphan< ::capnp::Text> ChangeDescriptor::Builder::disownObjectNa
       ::capnp::bounded<2>() * ::capnp::POINTERS));
 }
 
-inline bool ChangeDescriptor::Reader::hasLustrePath() const {
+inline bool ChangeDescriptor::Reader::hasFilePath() const {
   return !_reader.getPointerField(
       ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline bool ChangeDescriptor::Builder::hasLustrePath() {
+inline bool ChangeDescriptor::Builder::hasFilePath() {
   return !_builder.getPointerField(
       ::capnp::bounded<3>() * ::capnp::POINTERS).isNull();
 }
-inline  ::capnp::Text::Reader ChangeDescriptor::Reader::getLustrePath() const {
+inline  ::capnp::Text::Reader ChangeDescriptor::Reader::getFilePath() const {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
       ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline  ::capnp::Text::Builder ChangeDescriptor::Builder::getLustrePath() {
+inline  ::capnp::Text::Builder ChangeDescriptor::Builder::getFilePath() {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
       ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
-inline void ChangeDescriptor::Builder::setLustrePath( ::capnp::Text::Reader value) {
+inline void ChangeDescriptor::Builder::setFilePath( ::capnp::Text::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
       ::capnp::bounded<3>() * ::capnp::POINTERS), value);
 }
-inline  ::capnp::Text::Builder ChangeDescriptor::Builder::initLustrePath(unsigned int size) {
+inline  ::capnp::Text::Builder ChangeDescriptor::Builder::initFilePath(unsigned int size) {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
       ::capnp::bounded<3>() * ::capnp::POINTERS), size);
 }
-inline void ChangeDescriptor::Builder::adoptLustrePath(
+inline void ChangeDescriptor::Builder::adoptFilePath(
     ::capnp::Orphan< ::capnp::Text>&& value) {
   ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
       ::capnp::bounded<3>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan< ::capnp::Text> ChangeDescriptor::Builder::disownLustrePath() {
+inline ::capnp::Orphan< ::capnp::Text> ChangeDescriptor::Builder::disownFilePath() {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
       ::capnp::bounded<3>() * ::capnp::POINTERS));
 }
@@ -690,36 +690,36 @@ inline void ChangeDescriptor::Builder::setCrIndex( ::int64_t value) {
       ::capnp::bounded<3>() * ::capnp::ELEMENTS, value);
 }
 
-inline bool RegisterMapEntry::Reader::hasLustrePath() const {
+inline bool RegisterMapEntry::Reader::hasFilePath() const {
   return !_reader.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline bool RegisterMapEntry::Builder::hasLustrePath() {
+inline bool RegisterMapEntry::Builder::hasFilePath() {
   return !_builder.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS).isNull();
 }
-inline  ::capnp::Text::Reader RegisterMapEntry::Reader::getLustrePath() const {
+inline  ::capnp::Text::Reader RegisterMapEntry::Reader::getFilePath() const {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_reader.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline  ::capnp::Text::Builder RegisterMapEntry::Builder::getLustrePath() {
+inline  ::capnp::Text::Builder RegisterMapEntry::Builder::getFilePath() {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::get(_builder.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS));
 }
-inline void RegisterMapEntry::Builder::setLustrePath( ::capnp::Text::Reader value) {
+inline void RegisterMapEntry::Builder::setFilePath( ::capnp::Text::Reader value) {
   ::capnp::_::PointerHelpers< ::capnp::Text>::set(_builder.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS), value);
 }
-inline  ::capnp::Text::Builder RegisterMapEntry::Builder::initLustrePath(unsigned int size) {
+inline  ::capnp::Text::Builder RegisterMapEntry::Builder::initFilePath(unsigned int size) {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::init(_builder.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS), size);
 }
-inline void RegisterMapEntry::Builder::adoptLustrePath(
+inline void RegisterMapEntry::Builder::adoptFilePath(
     ::capnp::Orphan< ::capnp::Text>&& value) {
   ::capnp::_::PointerHelpers< ::capnp::Text>::adopt(_builder.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS), kj::mv(value));
 }
-inline ::capnp::Orphan< ::capnp::Text> RegisterMapEntry::Builder::disownLustrePath() {
+inline ::capnp::Orphan< ::capnp::Text> RegisterMapEntry::Builder::disownFilePath() {
   return ::capnp::_::PointerHelpers< ::capnp::Text>::disown(_builder.getPointerField(
       ::capnp::bounded<0>() * ::capnp::POINTERS));
 }

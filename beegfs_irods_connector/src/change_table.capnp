@@ -1,10 +1,10 @@
 @0x91aad5f4a36030a9;
 
 struct ChangeDescriptor {
-  fidstr @0 :Text;
-  parentFidstr @1 :Text;
+  objectIdentifier @0 :Text;
+  parentObjectIdentifier @1 :Text;
   objectName @2 :Text;
-  lustrePath @3 :Text;
+  filePath @3 :Text;
   eventType @4 :EventTypeEnum;
   timestamp @5 :Int64;
   operComplete @6 :Bool;
@@ -30,7 +30,7 @@ struct ChangeDescriptor {
 }
 
 struct RegisterMapEntry {
-  lustrePath @0 :Text;
+  filePath @0 :Text;
   irodsRegisterPath @1 :Text;
 }
 

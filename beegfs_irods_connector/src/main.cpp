@@ -1,5 +1,5 @@
 /*
- * Main routine handling the event loop for the Lustre changelog reader and
+ * Main routine handling the event loop for the Beegfs changelog reader and
  * the event loop for the iRODS API client.
  */
 
@@ -20,9 +20,9 @@
 
 // local libraries
 #include "irods_ops.hpp"
-#include "lustre_change_table.hpp"
+#include "beegfs_change_table.hpp"
 #include "config.hpp"
-#include "lustre_irods_errors.hpp"
+#include "beegfs_irods_errors.hpp"
 #include "logging.hpp"
 
 // irods libraries
@@ -119,31 +119,43 @@ std::string concatenate_paths_with_boost(const std::string& p1, const std::strin
 
 std::string get_basename(const std::string& p1) {
     boost::filesystem::path path_obj{p1};
-    return path_obj.stem().string();
+    return path_obj.filename().string();
 }
 
-void handle_event(const BeeGFS::packet& packet, const std::string& root_path, change_map_t& change_map) {
+void handle_event(const BeeGFS::packet& packet, const std::string& root_path, change_map_t& change_map, unsigned long long& last_cr_index) {
 
-    LOG(LOG_DBG, "packet received: [type=%s][path=%s][entryId=%s][parentEntryId=%s][targetPath=%s][targetParentId=%s]", 
+    LOG(LOG_DBG, "packet received: [type=%s][path=%s][entryId=%s][parentEntryId=%s][targetPath=%s][targetParentId=%s]\n", 
             to_string(packet.type).c_str(), packet.path.c_str(), packet.entryId.c_str(), packet.parentEntryId.c_str(), 
             packet.targetPath.c_str(), packet.targetParentId.c_str());
 
 
     std::string full_path = concatenate_paths_with_boost(root_path, packet.path);
     std::string basename = get_basename(packet.path);
+    std::string full_target_path;
 
     switch (packet.type) {
+        case BeeGFS::FileEventType::CREATE:
+            beegfs_create(++last_cr_index, root_path, packet.entryId, packet.parentEntryId, basename, full_path, change_map);
+            break;
         case BeeGFS::FileEventType::CLOSE_WRITE:
-            lustre_create(0, root_path, packet.entryId, packet.parentEntryId, basename, full_path, change_map);
+            beegfs_close(++last_cr_index, root_path, packet.entryId, packet.parentEntryId, basename, full_path, change_map);
             break;
         case BeeGFS::FileEventType::UNLINK:
-            lustre_unlink(0, root_path, packet.entryId, packet.parentEntryId, basename, full_path, change_map);
+            beegfs_unlink(++last_cr_index, root_path, packet.entryId, packet.parentEntryId, basename, full_path, change_map);
             break;
         case BeeGFS::FileEventType::MKDIR:
-            lustre_mkdir(0, root_path, packet.entryId, packet.parentEntryId, basename, full_path, change_map);
+            beegfs_mkdir(++last_cr_index, root_path, packet.entryId, packet.parentEntryId, basename, full_path, change_map);
             break;
         case BeeGFS::FileEventType::RMDIR:
-            lustre_rmdir(0, root_path, packet.entryId, packet.parentEntryId, basename, full_path, change_map);
+            beegfs_rmdir(++last_cr_index, root_path, packet.entryId, packet.parentEntryId, basename, full_path, change_map);
+            break;
+        case BeeGFS::FileEventType::RENAME:
+            basename = get_basename(packet.targetPath); 
+            full_target_path = concatenate_paths_with_boost(root_path, packet.targetPath);
+            beegfs_rename(++last_cr_index, root_path, packet.entryId, packet.targetParentId, basename, full_target_path, full_path, change_map);
+            break;
+        case BeeGFS::FileEventType::TRUNCATE:
+            beegfs_trunc(++last_cr_index, root_path, packet.entryId, packet.parentEntryId, basename, full_path, change_map);
             break;
         default:
             break;
@@ -199,9 +211,9 @@ int read_and_process_command_line_options(int argc, char *argv[], std::string& c
         po::notify(vm);
 
         if (vm.count("help")) {
-            std::cout << "Usage:  lustre_irods_connector [options]" << std::endl;
+            std::cout << "Usage:  beegfs_irods_connector [options]" << std::endl;
             std::cout << desc << std::endl;
-            return lustre_irods::QUIT;
+            return beegfs_irods::QUIT;
         }
 
         if (vm.count("config-file")) {
@@ -219,21 +231,21 @@ int read_and_process_command_line_options(int argc, char *argv[], std::string& c
                 LOG(LOG_DBG, "setting log file to %s\n", vm["log-file"].as<std::string>().c_str());
             }
         }
-        return lustre_irods::SUCCESS;
+        return beegfs_irods::SUCCESS;
     } catch (std::exception& e) {
          std::cerr << e.what() << std::endl;
          std::cerr << desc << std::endl;
-         return lustre_irods::INVALID_OPERAND_ERROR;
+         return beegfs_irods::INVALID_OPERAND_ERROR;
     }
 
 }
 
 // this is the main changelog reader loop.  It reads changelogs, writes the records to an internal data structure, 
 // and sends groups of changelog records to client updater threads.
-void run_main_changelog_reader_loop(const lustre_irods_connector_cfg_t& config_struct, change_map_t& change_map, 
+void run_main_changelog_reader_loop(const beegfs_irods_connector_cfg_t& config_struct, change_map_t& change_map, 
         zmq::socket_t& publisher, zmq::socket_t& subscriber, zmq::socket_t& sender,
-        std::set<std::string>& active_fidstr_list, unsigned long long& last_cr_index) {
-    
+        std::set<std::string>& active_objectIdentifier_list, unsigned long long& last_cr_index) {
+
     // create a vector holding the status of the client's connection to irods - true is up, false is down
     std::vector<bool> irods_api_client_connection_status(config_struct.irods_updater_thread_count, true);   
     unsigned int failed_connections_to_irods_count = 0;
@@ -242,7 +254,7 @@ void run_main_changelog_reader_loop(const lustre_irods_connector_cfg_t& config_s
 
     bool pause_reading = false;
     unsigned int sleep_period = config_struct.changelog_poll_interval_seconds;
-    //unsigned int max_number_of_changelog_records = config_struct.maximum_records_to_receive_from_lustre_changelog;
+    //unsigned int max_number_of_changelog_records = config_struct.maximum_records_to_receive_from_beegfs_changelog;
 
     BeeGFS::FileEventReceiver receiver(config_struct.beegfs_socket.c_str());
 
@@ -286,29 +298,9 @@ void run_main_changelog_reader_loop(const lustre_irods_connector_cfg_t& config_s
         }
 
         // TODO can we pause reading if events are not queued on beegfs side?
-        pause_reading = (failed_connections_to_irods_count >= irods_api_client_connection_status.size()); 
+        //pause_reading = (failed_connections_to_irods_count >= irods_api_client_connection_status.size()); 
 
         if (!pause_reading) {
-
-            // read events
-            using BeeGFS::FileEventReceiver;
-            const auto data = receiver.read(); 
-
-            switch (data.first) {
-                case FileEventReceiver::ReadErrorCode::Success:
-                    handle_event(data.second, config_struct.lustre_root_path, change_map);
-                    break;
-                case FileEventReceiver::ReadErrorCode::VersionMismatch:
-                    LOG(LOG_WARN, "Invalid packet version in BeeGFS event.  Ignoring event.\n");
-                    break;
-                case FileEventReceiver::ReadErrorCode::InvalidSize:
-                    LOG(LOG_WARN, "Invalid packet size in BeeGFS event.  Ignoring event.\n");
-                    break;
-                case FileEventReceiver::ReadErrorCode::ReadFailed:
-                    LOG(LOG_WARN, "Read BeeGFS event failed.\n");
-                    break;
-            }
-
 
             // read log entries and put them on ZMQ queue
             while (entries_ready_to_process(change_map)) {
@@ -328,16 +320,16 @@ void run_main_changelog_reader_loop(const lustre_irods_connector_cfg_t& config_s
                 void *buf = nullptr;
                 size_t buflen;
                 int rc = write_change_table_to_capnproto_buf(&config_struct, buf, buflen,
-                        change_map, active_fidstr_list);
+                        change_map, active_objectIdentifier_list);
 
-                if (rc == lustre_irods::COLLISION_IN_FIDSTR) {
+                if (rc == beegfs_irods::COLLISION_IN_FIDSTR) {
                     LOG(LOG_INFO, "----- Collision!  Breaking out -----\n");
                 }
 
                 // if we get a failure or we get a return code indicating that we must
                 // wait on the completion of one fid to complete before continuing, 
                 // then break out of this loop
-                if (rc != lustre_irods::SUCCESS) {
+                if (rc != beegfs_irods::SUCCESS) {
                     free(buf);
                     break;
                 }
@@ -352,6 +344,26 @@ void run_main_changelog_reader_loop(const lustre_irods_connector_cfg_t& config_s
 
             }
 
+            // read events
+            using BeeGFS::FileEventReceiver;
+            const auto data = receiver.read(); 
+
+            switch (data.first) {
+                case FileEventReceiver::ReadErrorCode::Success:
+                    handle_event(data.second, config_struct.beegfs_root_path, change_map, last_cr_index);
+                    break;
+                case FileEventReceiver::ReadErrorCode::VersionMismatch:
+                    LOG(LOG_WARN, "Invalid packet version in BeeGFS event.  Ignoring event.\n");
+                    break;
+                case FileEventReceiver::ReadErrorCode::InvalidSize:
+                    LOG(LOG_WARN, "Invalid packet size in BeeGFS event.  Ignoring event.\n");
+                    break;
+                case FileEventReceiver::ReadErrorCode::ReadFailed:
+                    LOG(LOG_WARN, "Read BeeGFS event failed.\n");
+                    break;
+            }
+
+
         } else {
             LOG(LOG_DBG, "in a paused state.  not reading changelog...\n");
         }
@@ -364,8 +376,8 @@ void run_main_changelog_reader_loop(const lustre_irods_connector_cfg_t& config_s
 
 // thread which reads the results from the irods updater threads and updates
 // the change table in memory
-void result_accumulator_main(const lustre_irods_connector_cfg_t *config_struct_ptr,
-        change_map_t* change_map, std::set<std::string>* active_fidstr_list) {
+void result_accumulator_main(const beegfs_irods_connector_cfg_t *config_struct_ptr,
+        change_map_t* change_map, std::set<std::string>* active_objectIdentifier_list) {
 
     if (nullptr == change_map || nullptr == config_struct_ptr) {
         LOG(LOG_ERR, "result accumulator received a nullptr and is exiting.");
@@ -412,10 +424,10 @@ void result_accumulator_main(const lustre_irods_connector_cfg_t *config_struct_p
             LOG(LOG_INFO, "accumulator received update status of %s\n", update_status.c_str());
 
             if (update_status == "FAIL") {
-                add_capnproto_buffer_back_to_change_table(buf, message.size(), *change_map, *active_fidstr_list);
+                add_capnproto_buffer_back_to_change_table(buf, message.size(), *change_map, *active_objectIdentifier_list);
             } else {
-                // remove all fidstr from active_fidstr_list 
-                remove_fidstr_from_active_list(buf, message.size(), *active_fidstr_list);
+                // remove all objectIdentifier from active_objectIdentifier_list 
+                remove_objectId_from_active_list(buf, message.size(), *active_objectIdentifier_list);
             } 
             /*char response_flag[5];
             memcpy(response_flag, message.data(), 4);
@@ -441,7 +453,7 @@ void result_accumulator_main(const lustre_irods_connector_cfg_t *config_struct_p
 
 // irods api client thread main routine
 // this is the main loop that reads the change entries in memory and sends them to iRODS via the API.
-void irods_api_client_main(const lustre_irods_connector_cfg_t *config_struct_ptr,
+void irods_api_client_main(const beegfs_irods_connector_cfg_t *config_struct_ptr,
         change_map_t* change_map, unsigned int thread_number) {
 
     if (nullptr == change_map || nullptr == config_struct_ptr) {
@@ -457,7 +469,7 @@ void irods_api_client_main(const lustre_irods_connector_cfg_t *config_struct_ptr
     std::string identity("changetable_readers");
     subscriber.setsockopt(ZMQ_SUBSCRIBE, identity.c_str(), identity.length());
 
-    // set up broadcast publisher for sending pause message to lustre log reader in case of irods failures
+    // set up broadcast publisher for sending pause message to beegfs log reader in case of irods failures
     //zmq::context_t context2(1);
     zmq::socket_t publisher(context, ZMQ_PUB);
     LOG(LOG_DBG, "client (%u) publisher conn_str = %s\n", thread_number, config_struct_ptr->changelog_reader_broadcast_address.c_str());
@@ -482,7 +494,7 @@ void irods_api_client_main(const lustre_irods_connector_cfg_t *config_struct_ptr
         zmq::message_t message;
 
         // initiate a connection object
-        lustre_irods_connection conn(thread_number);
+        beegfs_irods_connection conn(thread_number);
 
         size_t bytes_received = 0;
         try {
@@ -494,7 +506,7 @@ void irods_api_client_main(const lustre_irods_connector_cfg_t *config_struct_ptr
 
         if (!irods_error_detected && bytes_received > 0) {
 
-            irodsLustreApiInp_t inp {};
+            irodsBeegfsApiInp_t inp {};
             inp.buf = static_cast<unsigned char*>(message.data());
             inp.buflen = message.size(); 
 
@@ -503,7 +515,7 @@ void irods_api_client_main(const lustre_irods_connector_cfg_t *config_struct_ptr
             if (0 == conn.instantiate_irods_connection(config_struct_ptr, thread_number )) {
 
                 // send to irods
-                if (lustre_irods::IRODS_ERROR == conn.send_change_map_to_irods(&inp)) {
+                if (beegfs_irods::IRODS_ERROR == conn.send_change_map_to_irods(&inp)) {
                     irods_error_detected = true;
                 }
             } else {
@@ -551,7 +563,7 @@ void irods_api_client_main(const lustre_irods_connector_cfg_t *config_struct_ptr
             do {
 
                 // initiate a connection object
-                lustre_irods_connection conn(thread_number);
+                beegfs_irods_connection conn(thread_number);
 
 
                 // sleep for sleep_period in a 1s loop so we can catch a terminate message
@@ -596,7 +608,7 @@ void irods_api_client_main(const lustre_irods_connector_cfg_t *config_struct_ptr
 
 int main(int argc, char *argv[]) {
 
-    std::string config_file = "lustre_irods_connector_config.json";
+    std::string config_file = "beegfs_irods_connector_config.json";
     std::string log_file;
     bool fatal_error_detected = false;
 
@@ -611,13 +623,13 @@ int main(int argc, char *argv[]) {
     int rc;
 
     rc = read_and_process_command_line_options(argc, argv, config_file);
-    if (lustre_irods::QUIT == rc) {
+    if (beegfs_irods::QUIT == rc) {
         return EX_OK;
-    } else if (lustre_irods::INVALID_OPERAND_ERROR == rc) {
+    } else if (beegfs_irods::INVALID_OPERAND_ERROR == rc) {
         return  EX_USAGE;
     }
 
-    lustre_irods_connector_cfg_t config_struct;
+    beegfs_irods_connector_cfg_t config_struct;
     rc = read_config_file(config_file, &config_struct);
     if (rc < 0) {
         return EX_CONFIG;
@@ -638,12 +650,12 @@ int main(int argc, char *argv[]) {
         return EX_SOFTWARE;
     }
 
-    lustre_print_change_table(change_map);
+    beegfs_print_change_table(change_map);
 
     // connect to irods and get the resource id from the resource name 
     // uses irods environment for this initial connection
     { 
-        lustre_irods_connection conn(0);
+        beegfs_irods_connection conn(0);
 
         rc = conn.instantiate_irods_connection(nullptr, 0); 
         if (rc < 0) {
@@ -659,9 +671,9 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    // create a std::set of fidstr which is used to pause sending updates to irods client updater threads
+    // create a std::set of objectIdentifier which is used to pause sending updates to irods client updater threads
     // when a dependency is detected 
-    std::set<std::string> active_fidstr_list;
+    std::set<std::string> active_objectIdentifier_list;
 
 
     // start a pub/sub publisher which is used to terminate threads and to send irods up/down messages
@@ -683,7 +695,7 @@ int main(int argc, char *argv[]) {
     sender.bind(config_struct.changelog_reader_push_work_address);
 
     // start accumulator thread which receives results back from iRODS updater threads
-    std::thread accumulator_thread(result_accumulator_main, &config_struct, &change_map, &active_fidstr_list); 
+    std::thread accumulator_thread(result_accumulator_main, &config_struct, &change_map, &active_objectIdentifier_list); 
 
     // create a vector of irods client updater threads 
     std::vector<std::thread> irods_api_client_thread_list;
@@ -695,17 +707,17 @@ int main(int argc, char *argv[]) {
         //irods_api_client_connection_status.push_back(true);
     }
 
-    // add in an event for a  mkdir for the lustre_root so that it will get 
-    // populated with the fidstr
-    std::string root_fidstr = "root";
-    LOG(LOG_DBG, "Root fidstr %s\n", root_fidstr.c_str());
-    LOG(LOG_INFO, "lustre_write_fidstr_to_root_dir [lustre_root_path=%s][root_fidstr=%s]\n", config_struct.lustre_root_path.c_str(), root_fidstr.c_str());
-    lustre_write_fidstr_to_root_dir(config_struct.lustre_root_path, root_fidstr, change_map);
+    // add in an event for a  mkdir for the beegfs_root so that it will get 
+    // populated with the objectIdentifier
+    std::string root_objectIdentifier = "root";
+    LOG(LOG_DBG, "Root objectIdentifier %s\n", root_objectIdentifier.c_str());
+    LOG(LOG_INFO, "beegfs_write_objectId_to_root_dir [beegfs_root_path=%s][root_objectIdentifier=%s]\n", config_struct.beegfs_root_path.c_str(), root_objectIdentifier.c_str());
+    beegfs_write_objectId_to_root_dir(config_struct.beegfs_root_path, root_objectIdentifier, change_map);
 
 
     unsigned long long last_cr_index = 0;
     if (!fatal_error_detected) {
-        run_main_changelog_reader_loop(config_struct, change_map, publisher, subscriber, sender, active_fidstr_list, last_cr_index);
+        run_main_changelog_reader_loop(config_struct, change_map, publisher, subscriber, sender, active_objectIdentifier_list, last_cr_index);
     }
 
     // send message to threads to terminate

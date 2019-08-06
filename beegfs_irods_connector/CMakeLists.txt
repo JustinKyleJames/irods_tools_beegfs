@@ -6,7 +6,7 @@ set(CMAKE_C_COMPILER ${IRODS_EXTERNALS_FULLPATH_CLANG}/bin/clang)
 set(CMAKE_CXX_COMPILER ${IRODS_EXTERNALS_FULLPATH_CLANG}/bin/clang++)
 set (CMAKE_CXX_STANDARD 14)
 
-project(lustre-irods-connector C CXX)
+project(beegfs-irods-connector C CXX)
 
 find_package(Threads REQUIRED)
 
@@ -66,10 +66,10 @@ include_directories(/usr/include/irods
 
 set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,-z,defs")
 
-add_executable(lustre_irods_connector ${PROJECT_SOURCE_DIR}/src/change_table.capnp.c++ ${PROJECT_SOURCE_DIR}/src/lustre_change_table.cpp ${PROJECT_SOURCE_DIR}/src/irods_ops.cpp ${PROJECT_SOURCE_DIR}/src/config.cpp ${PROJECT_SOURCE_DIR}/src/main.cpp)
+add_executable(beegfs_irods_connector ${PROJECT_SOURCE_DIR}/src/change_table.capnp.c++ ${PROJECT_SOURCE_DIR}/src/beegfs_change_table.cpp ${PROJECT_SOURCE_DIR}/src/irods_ops.cpp ${PROJECT_SOURCE_DIR}/src/config.cpp ${PROJECT_SOURCE_DIR}/src/main.cpp)
 
 #target_link_libraries(
-    #lustre_irods_connector
+    #beegfs_irods_connector
   #PRIVATE
   #${IRODS_API_PLUGIN_LINK_LIBRARIES_${PLUGIN}}
   #${IRODS_EXTERNALS_FULLPATH_BOOST}/lib/libboost_filesystem.so
@@ -79,17 +79,17 @@ add_executable(lustre_irods_connector ${PROJECT_SOURCE_DIR}/src/change_table.cap
   #/usr/local/lib/libzmq.so
   #  )
 
-set_target_properties(lustre_irods_connector PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(beegfs_irods_connector PROPERTIES LINKER_LANGUAGE CXX)
 
-add_custom_command(TARGET lustre_irods_connector PRE_BUILD
+add_custom_command(TARGET beegfs_irods_connector PRE_BUILD
                        COMMAND ${CMAKE_COMMAND} -E copy
-                       ${CMAKE_SOURCE_DIR}/src/lustre_irods_connector_config.json ${CMAKE_CURRENT_BINARY_DIR}/lustre_irods_connector_config.json)
+                       ${CMAKE_SOURCE_DIR}/src/beegfs_irods_connector_config.json ${CMAKE_CURRENT_BINARY_DIR}/beegfs_irods_connector_config.json)
 
-#add_custom_command(TARGET lustre_irods_connector PRE_BUILD
+#add_custom_command(TARGET beegfs_irods_connector PRE_BUILD
 #    COMMAND capnp compile -oc++ ${PROJECT_SOURCE_DIR}/src/change_table.capnp)
 
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/src/change_table.capnp.c++  ${PROJECT_SOURCE_DIR}/src/change_table.capnp.h
     COMMAND capnp compile -oc++:${PROJECT_SOURCE_DIR}/src --src-prefix=${PROJECT_SOURCE_DIR}/src ${PROJECT_SOURCE_DIR}/src/change_table.capnp)
 
-#add_dependencies(lustre_irods_connector ${PROJECT_SOURCE_DIR}/src/change_table.capnp.c++ ${PROJECT_SOURCE_DIR}/src/change_table.capnp.h)
+#add_dependencies(beegfs_irods_connector ${PROJECT_SOURCE_DIR}/src/change_table.capnp.c++ ${PROJECT_SOURCE_DIR}/src/change_table.capnp.h)
 
